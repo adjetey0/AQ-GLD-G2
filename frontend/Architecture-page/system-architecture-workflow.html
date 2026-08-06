@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Architecture Workflow · AQ-GLD-G2</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="../theme-toggle.css">
+<style>
+  :root{
+    --ink:#12161c;
+    --navy:#1c2733;
+    --navy-2:#243244;
+    --accent:#2f5faa;
+    --accent-bright:#3f76c9;
+    --accent-soft:#c8d6ea;
+    --paper:#f3f4f6;
+    --card:#ffffff;
+    --line:#e2e4e9;
+    --muted:#6b7280;
+    --mono:'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans:'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+    .back-sign{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--navy);
+    cursor:pointer;
+    margin-bottom:18px;
+    user-select:none;
+  }
+  
+  .back-sign:hover{
+    color:var(--accent);
+  }
+
+  .page{max-width:1180px;margin:0 auto;padding:48px 32px 96px;}
+
+  /* ---- section header ---- */
+  .section-title{
+    display:flex;align-items:center;gap:12px;
+    font-family:var(--mono);
+    font-size:15px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink);margin:0 0 14px;
+  }
+  .section-title .swatch{
+    width:22px;height:22px;border-radius:4px;
+    background:var(--accent-soft);
+    flex-shrink:0;
+  }
+  .section-sub{
+    font-size:14.5px;color:var(--muted);
+    margin:0 0 20px;max-width:720px;line-height:1.55;
+  }
+  .rule{border:none;border-top:1px solid var(--line);margin:0 0 32px;}
+
+  /* ---- layout ---- */
+  .workflow{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    background:var(--card);
+  }
+  @media(max-width:900px){
+    .workflow{grid-template-columns:1fr;}
+  }
+
+  /* ---- diagram panel ---- */
+  .diagram-panel{
+    padding:28px 24px 34px;
+    background-image:
+      radial-gradient(circle, #d9dde4 1px, transparent 1px);
+    background-size:16px 16px;
+    background-color:#f7f8f9;
+  }
+  .diagram-title{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--mono);
+    font-size:14px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink);
+    margin:0 0 18px;
+  }
+  .diagram-title svg{width:16px;height:16px;stroke:var(--accent);fill:none;}
+
+  .diagram-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:6px;
+  }
+  .diagram-scroll svg{
+    display:block;
+    margin:0 auto;
+    width:100%;
+    max-width:820px;
+    height:auto;
+    min-width:0;
+  }
+
+  .legend{
+    display:flex;justify-content:center;margin-top:18px;
+  }
+  .legend-box{
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    padding:10px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .legend-label{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .legend-items{
+    display:flex;gap:20px;flex-wrap:wrap;justify-content:center;
+  }
+  .legend-item{
+    display:flex;align-items:center;gap:6px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .legend-dot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--accent-bright);
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .legend-dot svg{width:8px;height:8px;stroke:#fff;fill:none;stroke-width:3;}
+  .legend-line{width:18px;height:0;border-top:2px solid var(--accent-bright);display:inline-block;}
+
+  /* ---- steps panel ---- */
+  .steps-panel{
+    background:var(--navy);
+    color:#fff;
+    padding:26px 26px 22px;
+    display:flex;
+    flex-direction:column;
+  }
+  .steps-list{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    flex:1;
+  }
+  .step{
+    display:flex;gap:14px;
+    opacity:0;
+    transform:translateY(10px);
+    animation:stepIn .5s ease forwards;
+  }
+  .step:nth-child(1){animation-delay:.05s;}
+  .step:nth-child(2){animation-delay:.15s;}
+  .step:nth-child(3){animation-delay:.25s;}
+  .step:nth-child(4){animation-delay:.35s;}
+  @keyframes stepIn{to{opacity:1;transform:translateY(0);}}
+
+  .step-num{
+    font-family:var(--mono);
+    font-size:11px;font-weight:700;
+    color:var(--accent-soft);
+    border:1px solid #3a4a5e;
+    border-radius:4px;
+    width:30px;height:24px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .step-title{
+    font-family:var(--mono);
+    font-size:12px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;
+    margin:0 0 6px;
+    color:#fff;
+  }
+  .step-desc{
+    font-size:12.5px;
+    line-height:1.55;
+    color:#aab4c2;
+    margin:0;
+  }
+
+  .steps-footer{
+    margin-top:26px;
+    padding-top:16px;
+    border-top:1px solid #34424f;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#8fd9a8;
+  }
+  .steps-footer svg{width:14px;height:14px;stroke:#8fd9a8;fill:none;flex-shrink:0;}
+
+  /* svg diagram elements */
+  .node rect{
+    fill:#fff;
+    stroke:var(--accent-bright);
+    stroke-width:2;
+  }
+  .node text{
+    font-family:var(--sans);
+    font-size:12.5px;
+    font-weight:700;
+    fill:var(--ink);
+    text-anchor:middle;
+  }
+  .flow-line{
+    stroke:var(--accent-bright);
+    stroke-width:2.4;
+    fill:none;
+  }
+  .flow-line.dashed{
+    stroke-dasharray:5 5;
+    stroke-width:1.6;
+  }
+
+  body[data-theme="dark"] .node text{
+    fill:var(--paper);
+  }
+  body[data-theme="dark"] .step-num{
+    color:#ffff;
+    border-color:#ffff;
+  }
+
+  @media (max-width:640px){
+    .page{padding:24px 16px 64px;}
+    .section-sub{font-size:13px;}
+    .diagram-panel{padding:20px 12px 24px;}
+    .diagram-title{font-size:12px;margin-bottom:14px;}
+    .legend{margin-top:14px;}
+    .legend-box{padding:10px 12px;width:100%;}
+    .legend-items{gap:10px 12px;}
+    .steps-panel{padding:20px 16px 18px;}
+    .step{gap:10px;}
+    .step-title{font-size:11px;}
+    .step-desc{font-size:12px;}
+    .steps-footer{font-size:9px;line-height:1.5;}
+  }
+</style>
+</head>
+<body>
+  <div class="back-sign" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode"><span class="theme-toggle__icon" aria-hidden="true">🌙</span><span class="theme-toggle__label">Dark</span></button></div>
+<div class="page">
+
+  <p class="section-title"><span class="swatch"></span>System Architecture Workflow</p>
+  <p class="section-sub">Data propagation flow from physical environmental stimulus to real-time notification endpoints.</p>
+  <hr class="rule">
+
+  <div class="workflow">
+
+    <!-- Diagram -->
+    <div class="diagram-panel">
+      <p class="diagram-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        System Architecture Flow
+      </p>
+
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#3f76c9"/>
+            </marker>
+          </defs>
+
+          <!-- connecting lines (drawn first, under boxes) -->
+          <g class="flow-line">
+            <!-- top row horizontal double arrows -->
+            <line x1="222" y1="90" x2="308" y2="90" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+            <line x1="532" y1="90" x2="618" y2="90" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+            <!-- data acquisition down to actuation -->
+            <line x1="420" y1="112" x2="420" y2="188" marker-end="url(#arrow)"/>
+
+            <!-- sensing module down to user interface (bottom-left) -->
+            <line x1="140" y1="112" x2="140" y2="298" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+            <!-- user interface(top) down to feedback loop -->
+            <line x1="676" y1="112" x2="676" y2="298" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+
+            <!-- diagonal: sensing module to actuation system -->
+            <line x1="190" y1="112" x2="356" y2="212" marker-end="url(#arrow)"/>
+
+            <!-- diagonal: user interface(top) to actuation system -->
+            <line x1="628" y1="112" x2="486" y2="212" marker-end="url(#arrow)"/>
+
+            <!-- actuation system down to control algorithm unit -->
+            <line x1="420" y1="248" x2="420" y2="298" marker-end="url(#arrow)"/>
+
+            <!-- diagonal: user interface(bottom) to actuation system -->
+            <line x1="190" y1="298" x2="356" y2="236" marker-end="url(#arrow)"/>
+
+            <!-- diagonal: actuation system to feedback loop -->
+            <line x1="486" y1="236" x2="628" y2="298" marker-end="url(#arrow)"/>
+
+            <!-- bottom row horizontal double arrows -->
+            <line x1="222" y1="320" x2="308" y2="320" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+            <line x1="532" y1="320" x2="618" y2="320" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          </g>
+
+          <!-- dashed bypass connectors -->
+          <g class="flow-line dashed">
+            <path d="M140,112 L140,168 L350,168 L350,200"/>
+            <path d="M676,112 L676,168 L490,168 L490,200"/>
+          </g>
+
+          <!-- nodes -->
+          <g class="node">
+            <rect x="60" y="65" width="160" height="47" rx="6"/>
+            <text x="140" y="84">SENSING</text>
+            <text x="140" y="100">MODULE</text>
+          </g>
+
+          <g class="node">
+            <rect x="310" y="65" width="220" height="47" rx="6"/>
+            <text x="420" y="84">DATA ACQUISITION &amp;</text>
+            <text x="420" y="100">PROCESSING</text>
+          </g>
+
+          <g class="node">
+            <rect x="620" y="65" width="120" height="47" rx="6"/>
+            <text x="680" y="84">USER</text>
+            <text x="680" y="100">INTERFACE</text>
+          </g>
+
+          <g class="node">
+            <rect x="350" y="200" width="140" height="47" rx="6"/>
+            <text x="420" y="219">ACTUATION</text>
+            <text x="420" y="235">SYSTEM</text>
+          </g>
+
+          <g class="node">
+            <rect x="60" y="298" width="160" height="47" rx="6"/>
+            <text x="140" y="317">USER</text>
+            <text x="140" y="333">INTERFACE</text>
+          </g>
+
+          <g class="node">
+            <rect x="310" y="298" width="220" height="47" rx="6"/>
+            <text x="420" y="317">CONTROL ALGORITHM</text>
+            <text x="420" y="333">UNIT</text>
+          </g>
+
+          <g class="node">
+            <rect x="620" y="298" width="120" height="47" rx="6"/>
+            <text x="680" y="317">FEEDBACK</text>
+            <text x="680" y="333">LOOP</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="legend">
+        <div class="legend-box">
+          <span class="legend-label">Legend &amp; Context</span>
+          <div class="legend-items">
+            <span class="legend-item">
+              <span class="legend-dot"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              Data Flow
+            </span>
+            <span class="legend-item">
+              <span class="legend-line"></span>
+              Control Signal
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-panel">
+      <div class="steps-list">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div>
+            <p class="step-title">Sensor Node Tier</p>
+            <p class="step-desc">MQ-series sensors capture atmospheric particulates and output analog signals to the Arduino Mega.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <div>
+            <p class="step-title">Communication Bridge</p>
+            <p class="step-desc">Processed data is serialized and transmitted via the ESP8266 WiFi module using secured TCP/IP protocols.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <div>
+            <p class="step-title">Backend Processing</p>
+            <p class="step-desc">Node.js server handles asynchronous data intake, persistence in PostgreSQL, and real-time logic execution.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">04</span>
+          <div>
+            <p class="step-title">Presentation Layer</p>
+            <p class="step-desc">React-based dashboard visualizes live telemetry while FCM triggers immediate push alerts to subscribers.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps-footer">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="M9 12l2 2 4-4"/></svg>
+        Validated Security Protocol: End-to-End TLS
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<script src="../theme-toggle.js"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQ-GLD-G2 · System Architecture &amp; Hardware Overview</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="../theme-toggle.css">
+<style>
+  :root{
+    --ink:#12161c;
+    --navy:#1c2733;
+    --accent:#2f5fff;
+    --accent-soft:#e8edff;
+    --paper:#f3f4f6;
+    --card:#ffffff;
+    --line:#e2e4e9;
+    --muted:#6b7280;
+    --mono: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans: 'Inter','Helvetica Neue',Arial,sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:56px 32px 96px;
+  }
+
+  .back-sign{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--navy);
+    cursor:pointer;
+    margin-bottom:18px;
+    user-select:none;
+  }
+
+  .back-sign:hover{
+    color:var(--accent);
+  }
+
+  /* ---------- Eyebrow ---------- */
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:28px;
+    animation:fadeUp .6s ease both;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--accent);
+    border-radius:2px;
+    display:inline-block;
+  }
+
+  /* ---------- Header ---------- */
+  header.hero{
+    border-left:4px solid var(--accent);
+    padding-left:24px;
+    margin-bottom:36px;
+  }
+  h1{
+    font-size:clamp(30px,4.6vw,46px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+    font-weight:800;
+    text-transform:uppercase;
+    animation:fadeUp .7s ease both .05s;
+  }
+  .lede{
+    max-width:660px;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.65;
+    margin:0;
+    animation:fadeUp .7s ease both .12s;
+  }
+  .lede strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- Section heading ---------- */
+  .section-head{
+    margin-top:56px;
+    margin-bottom:26px;
+    animation:fadeUp .6s ease both;
+  }
+  .section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin:0 0 10px;
+  }
+  .section-title .ico{
+    width:20px;height:20px;
+    border-radius:5px;
+    background:var(--navy);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .section-title .ico svg{width:12px;height:12px;stroke:#fff;fill:none;}
+  .section-sub{
+    font-size:14px;
+    color:var(--muted);
+    margin:0 0 18px;
+    max-width:620px;
+  }
+  .rule{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:0;
+  }
+
+  /* ---------- Grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    margin-top:28px;
+  }
+  @media(max-width:980px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    opacity:0;
+    transform:translateY(16px);
+    animation:fadeUp .55s ease forwards;
+    transition:box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .card:hover{
+    box-shadow:0 14px 30px -14px rgba(18,22,28,.18);
+    transform:translateY(-3px);
+    border-color:#d7dbe3;
+  }
+  .card:nth-child(1){animation-delay:.08s;}
+  .card:nth-child(2){animation-delay:.14s;}
+  .card:nth-child(3){animation-delay:.20s;}
+  .card:nth-child(4){animation-delay:.26s;}
+  .card:nth-child(5){animation-delay:.32s;}
+  .card:nth-child(6){animation-delay:.38s;}
+  .card:nth-child(7){animation-delay:.44s;}
+  .card:nth-child(8){animation-delay:.50s;}
+
+  .card-media{
+    aspect-ratio:4/3;
+    background:var(--media-bg,#eef0f3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .card-media svg{width:62%;height:62%;position:relative;z-index:1;}
+  .card-media::after{
+    content:"";
+    position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.5), transparent 60%);
+  }
+
+  .card-body{
+    padding:18px 18px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+  }
+  .card-title{
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:.01em;
+    text-transform:uppercase;
+    margin:0;
+  }
+
+  body[data-theme="dark"] .card-title,
+  body[data-theme="dark"] .card-desc,
+  body[data-theme="dark"] .spec-list li,
+  body[data-theme="dark"] .section-title,
+  body[data-theme="dark"] .section-sub,
+  body[data-theme="dark"] .lede,
+  body[data-theme="dark"] .lede strong,
+  body[data-theme="dark"] .back-sign {
+    color: var(--theme-text);
+  }
+  .card-desc{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin:0 0 4px;
+  }
+  .spec-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    margin-top:auto;
+  }
+  .spec-list li{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--navy);
+    display:flex;
+    align-items:flex-start;
+    gap:7px;
+    font-weight:600;
+  }
+  .spec-list li::before{
+    content:"";
+    width:5px;height:5px;
+    margin-top:4px;
+    background:var(--accent);
+    border-radius:1px;
+    flex-shrink:0;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(16px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    .card{opacity:1;transform:none;}
+  }
+
+  footer{
+    margin-top:64px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--muted);
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+</style>
+</head>
+<body>
+  <div class="back-sign" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode"><span class="theme-toggle__icon" aria-hidden="true">🌙</span><span class="theme-toggle__label">Dark</span></button></div>
+
+<div class="page">
+
+  <div class="eyebrow">AQ-GLD-G2 Documentation V2.4</div>
+
+  <header class="hero">
+    <h1>System Architecture &amp;<br>Hardware Overview</h1>
+    <p class="lede">Technical specification and structural analysis of the <strong>AQ-GLD-G2</strong> environmental monitoring system. This document details the multi-layered integration between sensor hardware, wireless communication protocols, and the centralized data processing backend.</p>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <p class="section-title">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round"/></svg></span>
+        Hardware Component Specification
+      </p>
+      <p class="section-sub">The AQ-GLD-G2 utilizes high-precision modular hardware for data acquisition and local actuation.</p>
+    </div>
+    <hr class="rule">
+
+    <div class="grid" id="componentGrid"></div>
+  </section>
+
+  <footer>
+    <span>AQ-GLD-G2 · Rev 2.4</span>
+    <span id="clock"></span>
+  </footer>
+
+</div>
+
+<script>
+
+  function goBack() {
+    window.history.back();
+  }
+
+const components = [
+  {
+    name:"Arduino Mega 2560",
+    desc:"Primary microcontroller unit handling sensor data acquisition and peripheral control.",
+    bg:"#e9edf5",
+    specs:["ATMEGA2560","54 Digital I/O Pins","16 Analog Inputs","256 KB Flash Memory"],
+    Image:"../../assets/arduino mega.png"
+  },
+  {
+    name:"MQ-2 Gas Sensor",
+    desc:"LPG, smoke, and carbon monoxide detection module for industrial use.",
+    bg:"#fdf3e0",
+    specs:["Combustible Gas","High Sensitivity","Fast Response","Analog Output"],
+    Image:"../../assets/MQ-2 gas sensor.jpg"
+  },
+  {
+    name:"MQ-5 Gas Sensor",
+    desc:"Natural gas and LPG detection optimized for high concentration environments.",
+    bg:"#fbeee0",
+    specs:["Methane Focus","LPG-Butane Detection","Internal Heater","TTL Signal"],
+    Image:"../../assets/MQ-5 gas sensor.png"
+ },
+  {
+    name:"MQ-7 Gas Sensor",
+    desc:"High sensitivity carbon monoxide (CO) sensor for safety monitoring.",
+    bg:"#eef1f5",
+    specs:["CO Detection","10-10000ppm Range","Dual Voltage Cycle","Resistive Output"],
+    Image:"../../assets/MQ-7 gas sensor.png"
+  },
+  {
+    name:"ESP8266 WiFi",
+    desc:"Integrated TCP/IP stack module providing high-speed wireless data transmission.",
+    bg:"#e7f0eb",
+    specs:["802.11 B/G/N","Low Power","IEEE 2.0 Interface","Integrated Switch"],
+    Image:"../../assets/esp8266 wifi.png"
+ },
+  {
+    name:"Relay Module",
+    desc:"Electromagnetic switch for controlling high-current AC/DC payload loads.",
+    bg:"#e7f0eb",
+    specs:["250VAC 10A Max","Opto-Isolated","Active-Low Trigger","3/6 Contacts"],
+    Image:"../../assets/Relay module.png"
+ },
+  {
+    name:"Active Buzzer",
+    desc:"Integrated sound generation component for high-frequency audible alerts.",
+    bg:"#eef1f5",
+    specs:["3.3V - 5V DC","Continuous Pulse","2300Hz Resonance","Piezo/Electric"],
+    Image:"../../assets/Active Buzzer.png"
+  },
+  {
+    name:"OLED Display",
+    desc:"0.96 inch high-contrast display for real-time local system diagnostics.",
+    bg:"linear-gradient(135deg,#0b0e3d,#4a1e8f 50%,#c0348f)",
+    specs:["128x64 Resolution","I2C Interface","SSD1306 Driver","Self-Luminous"],
+    Image:"../../assets/OLED Display.png"
+  }
+];
+
+const grid = document.getElementById('componentGrid');
+components.forEach(c=>{
+  const card = document.createElement('div');
+  card.className='card';
+  card.innerHTML = `
+    <div class="card-media" style="background:${c.bg}"><img src="${c.Image}" alt="${c.name}" style="max-width:100%; height:auto;" /></div>
+    <div class="card-body">
+      <h3 class="card-title">${c.name}</h3>
+      <p class="card-desc">${c.desc}</p>
+      <ul class="spec-list">${c.specs.map(s=>`<li>${s}</li>`).join('')}</ul>
+    </div>`;
+  grid.appendChild(card);
+});
+
+function tick(){
+  const d = new Date();
+  document.getElementById('clock').textContent = d.toISOString().slice(0,19).replace('T',' ')+' UTC';
+}
+tick();
+setInterval(tick,1000);
+</script>
+<script src="../theme-toggle.js"></script>
+</body>
+</html>

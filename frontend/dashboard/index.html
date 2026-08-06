@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-GLD-G2 | Live Telemetry Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../theme-toggle.css">
+</head>
+<body data-state="normal">
+    <!-- Background Technical Grid & Concentric Circles -->
+    <div class="bg-graphics" aria-hidden="true">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <!-- Brand / Logo -->
+                <div class="brand">
+                    <div class="brand-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="15" x2="23" y2="15"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="15" x2="4" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">AQ-GLD-G2</span>
+                        <span class="brand-subtitle">ENGINEERING SYSTEMS</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav-tabs" id="navTabs">
+                    <a href="index.html" class="tab-item active">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Overview</span>
+                    </a>
+                    <a href="../Architecture-page/system-architecture-workflow.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M21 19c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span>Architecture</span>
+                    </a>
+                    <a href="../Architecture-page/hardware-overview.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span>Documentation</span>
+                    </a>
+                    <a href="../Architecture-page/project-team.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        </svg>
+                        <span>Team</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+                    <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+                    <span class="theme-toggle__label">Dark</span>
+                </button>
+                <a href="../index.html" class="sign-in-link">Sign In</a>
+                <button class="support-btn">Support</button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive State Switcher Bar (Demo Controller) -->
+    <div class="state-switcher-bar hidden">
+        <div class="dashboard-container switcher-flex">
+            <span class="switcher-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                SIMULATED SYSTEM STATE:
+            </span>
+            <div class="state-buttons">
+                <button class="state-btn active" data-set-state="normal">
+                    <span class="state-dot dot-green"></span>
+                    Normal / Safe
+                </button>
+                <button class="state-btn" data-set-state="danger">
+                    <span class="state-dot dot-red"></span>
+                    Danger (Gas Leak)
+                </button>
+                <button class="state-btn" data-set-state="offline">
+                    <span class="state-dot dot-amber"></span>
+                    Device Offline
+                </button>
+                <button class="state-btn" data-set-state="unpaired">
+                    <span class="state-dot dot-grey"></span>
+                    No Device Paired
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-Header Status Control Bar -->
+    <div class="sub-navbar" id="subNavbar">
+        <div class="dashboard-container sub-nav-flex">
+            <div class="sub-nav-left">
+                <span class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span id="statusText">ONLINE</span>
+                </span>
+                <span class="divider"></span>
+                <span class="update-time">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    LAST UPDATED: <strong id="lastUpdatedSec">2S</strong> AGO
+                </span>
+            </div>
+
+            <div class="sub-nav-right">
+                <button class="sub-nav-btn active">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    LIVE VIEW
+                </button>
+                <button class="sub-nav-btn">
+                <a href="../aq_gld_g2_dashboard/index.html">
+                    PROFILE & STATS
+                    </a>
+                </button>
+                <div class="user-profile">
+                    <img src="" alt="User avatar" class="avatar-img">
+                    <span class="user-name">username</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="dashboard-wrapper">
+        <div class="dashboard-container">
+
+            <!-- 1. NORMAL GREEN BANNER -->
+            <div class="alert-banner alert-banner-green" id="bannerNormal">
+                <div class="banner-left">
+                    <div class="check-circle-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <span class="banner-text">ALL CLEAR &mdash; NO HAZARDS DETECTED. SYSTEM OPERATING NORMALLY.</span>
+                </div>
+                <div class="banner-right">
+                    <span class="stat-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                        </svg>
+                        SIGNAL: -42dBm
+                    </span>
+                    <span class="stat-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        SYNC: 0.4S LATENCY
+                    </span>
+                </div>
+            </div>
+
+            <!-- 2. DANGER RED BANNER -->
+            <div class="alert-banner alert-banner-red" id="bannerDanger" style="display: none;">
+                <div class="banner-left">
+                    <div class="siren-icon pulse-alarm">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M11 5 L6 9 L2 9 L2 15 L6 15 L11 19 L11 5 Z"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                    </div>
+                    <span class="banner-text">DANGER &mdash; GAS LEAK DETECTED!</span>
+                </div>
+                <div class="banner-right">
+                    <span class="stat-meta blink-text">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        EMERGENCY UPLINK ACTIVE
+                    </span>
+                </div>
+            </div>
+
+            <!-- 3. DEVICE OFFLINE AMBER BANNER -->
+            <div class="alert-banner alert-banner-amber" id="bannerOffline" style="display: none;">
+                <div class="banner-left">
+                    <div class="warning-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="banner-text-group">
+                        <span class="banner-text">DEVICE OFFLINE &mdash; NO DATA RECEIVED IN OVER 60 SECONDS.</span>
+                        <span class="banner-subtext">YOUR PHYSICAL DETECTOR CONTINUES TO OPERATE AUTONOMOUSLY VIA LOCAL ARDUINO LOGIC.</span>
+                    </div>
+                </div>
+                <div class="banner-right">
+                    <span class="stat-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                            <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                        </svg>
+                        CONNECTION LOST
+                    </span>
+                </div>
+            </div>
+
+            <!-- ACTIVE PAIRED HARDWARE VIEW (CARDS & GRAPH) -->
+            <div class="active-hardware-view" id="activeHardwareView">
+                
+                <!-- Sensor Cards Row -->
+                <div class="sensor-grid">
+                    
+                    <!-- MQ-2 Card -->
+                    <div class="sensor-card" id="cardMq2">
+                        <div class="sensor-card-top">
+                            <div class="sensor-title">
+                                <svg class="sensor-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                </svg>
+                                <span>MQ-2 | COMBUSTIBLE GAS</span>
+                            </div>
+                            <div class="sensor-card-actions">
+                                <span class="status-badge-card" id="badgeMq2">SAFE</span>
+                                <button class="device-action-btn" type="button" data-device-action aria-label="Device options">⋮</button>
+                            </div>
+                        </div>
+                        <div class="sensor-value-box">
+                            <span class="sensor-val" id="mq2Val">128</span>
+                            <span class="sensor-unit">PPM</span>
+                        </div>
+                        <div class="sensor-card-bottom">
+                            <span class="sensor-time" id="timeMq2">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                T-0:00.02
+                            </span>
+                            <svg class="lightning-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- MQ-5 Card -->
+                    <div class="sensor-card" id="cardMq5">
+                        <div class="sensor-card-top">
+                            <div class="sensor-title">
+                                <svg class="sensor-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                                </svg>
+                                <span>MQ-5 | NATURAL GAS</span>
+                            </div>
+                            <div class="sensor-card-actions">
+                                <span class="status-badge-card" id="badgeMq5">SAFE</span>
+                                <button class="device-action-btn" type="button" data-device-action aria-label="Device options">⋮</button>
+                            </div>
+                        </div>
+                        <div class="sensor-value-box">
+                            <span class="sensor-val" id="mq5Val">89</span>
+                            <span class="sensor-unit">PPM</span>
+                        </div>
+                        <div class="sensor-card-bottom">
+                            <span class="sensor-time" id="timeMq5">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                T-0:00.02
+                            </span>
+                            <svg class="lightning-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- MQ-7 Card -->
+                    <div class="sensor-card" id="cardMq7">
+                        <div class="sensor-card-top">
+                            <div class="sensor-title">
+                                <svg class="sensor-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                                </svg>
+                                <span>MQ-7 | CARBON MONOXIDE</span>
+                            </div>
+                            <div class="sensor-card-actions">
+                                <span class="status-badge-card" id="badgeMq7">SAFE</span>
+                                <button class="device-action-btn" type="button" data-device-action aria-label="Device options">⋮</button>
+                            </div>
+                        </div>
+                        <div class="sensor-value-box">
+                            <span class="sensor-val" id="mq7Val">17</span>
+                            <span class="sensor-unit">PPM</span>
+                        </div>
+                        <div class="sensor-card-bottom">
+                            <span class="sensor-time" id="timeMq7">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                T-0:00.02
+                            </span>
+                            <svg class="lightning-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Main Live Telemetry Chart Section -->
+                <div class="chart-section-card">
+                    <div class="chart-header">
+                        <div class="chart-header-left">
+                            <h2 class="chart-title">LIVE TELEMETRY (LAST 30 MIN)</h2>
+                            <p class="chart-subtitle">Synchronized multi-sensor data feed with calibrated safety thresholds.</p>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-box box-mq2"></span>
+                                <span class="legend-name">MQ-2</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-box box-mq5"></span>
+                                <span class="legend-name">MQ-5</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-box box-mq7"></span>
+                                <span class="legend-name">MQ-7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-body">
+                        <div class="y-axis-title">PPM (Parts Per Million)</div>
+                        <div class="canvas-container">
+                            <canvas id="telemetryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Modules Row -->
+                <div class="modules-grid">
+
+                    <!-- Module 1: OLED Mirror Output -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg>
+                                <span>OLED MIRROR OUTPUT</span>
+                            </div>
+                            <span class="module-spec">SSD1306 | 128x64</span>
+                        </div>
+                        <div class="oled-screen" id="oledScreen">
+                            <div class="oled-line muted-text">SYSTEM READY</div>
+                            <div class="oled-line safe-text" id="oledStatus">AIR QUALITY: SAFE</div>
+                            <div class="oled-line-group">
+                                <div class="oled-sensor">MQ-2: <span id="oledMq2">128</span> PPM</div>
+                                <div class="oled-sensor">MQ-5: <span id="oledMq5">89</span> PPM</div>
+                                <div class="oled-sensor">MQ-7: <span id="oledMq7">17</span> PPM</div>
+                            </div>
+                            <div class="oled-footer">v2.4.0</div>
+                        </div>
+                    </div>
+
+                    <!-- Module 2: Relay Module Status -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg>
+                                <span>RELAY MODULE STATUS</span>
+                            </div>
+                            <span class="module-spec">ACTUATOR TIER-1</span>
+                        </div>
+                        <div class="relay-box" id="relayBox">
+                            <div class="open-badge" id="relayBadge">OPEN</div>
+                            <div class="operation-info">
+                                <span class="op-label">OPERATION TIME</span>
+                                <span class="op-timer" id="opTimer">04:12:08</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 3: Audible Alert System -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <polygon points="11 5 L6 9 L2 9 L2 15 L6 15 L11 19 L11 5 Z"></polygon>
+                                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                                </svg>
+                                <span>AUDIBLE ALERT SYSTEM</span>
+                            </div>
+                            <span class="module-spec">PIEZO ACTIVE</span>
+                        </div>
+                        <div class="audio-box" id="audioBox">
+                            <div class="silent-icon-circle" id="audioIconBox">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.75">
+                                    <polygon points="11 5 L6 9 L2 9 L2 15 L6 15 L11 19 L11 5 Z"></polygon>
+                                    <line x1="22" y1="9" x2="16" y2="15"></line>
+                                    <line x1="16" y1="9" x2="22" y2="15"></line>
+                                </svg>
+                            </div>
+                            <span class="silent-title" id="audioTitle">SILENT</span>
+                            <span class="silent-sub" id="audioSub">NO ALARM CONDITIONS ACTIVE</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div> <!-- /activeHardwareView -->
+
+            <!-- 4. NO DEVICE PAIRED VIEW (UNPAIRED STATE) -->
+            <div class="unpaired-view-card" id="unpairedView" style="display: none;">
+                <div class="unpaired-icon-wrapper">
+                    <div class="chip-icon-box">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="1.75">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="15" x2="23" y2="15"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="15" x2="4" y2="15"></line>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="unpaired-title">NO DEVICE PAIRED</h2>
+                <p class="unpaired-subtitle">
+                    CONNECT YOUR PHYSICAL AQ-GLD-G2 DETECTOR TO START MONITORING LIVE AIR QUALITY.
+                </p>
+                <button class="pair-btn" id="pairDeviceBtn">
+                    <span class="plus-icon">+</span> PAIR NEW DEVICE
+                </button>
+                <div class="scanning-status" id="scanningStatus">
+                    <span class="radar-spinner"></span>
+                    <span>SCANNING FOR HARDWARE VIA BLUETOOTH...</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Global Telemetry Footer -->
+    <footer class="telemetry-footer">
+        <div class="dashboard-container footer-content">
+            <div class="footer-left">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>AQ-GLD-G2 SECURE TELEMETRY PORTAL</span>
+            </div>
+            <div class="footer-center">
+                <span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    AES-256 LINK ENCRYPTED
+                </span>
+                <span class="sep">&bull;</span>
+                <span id="footerUptime">UPTIME: 99.98%</span>
+            </div>
+            <div class="footer-right">
+                <span>&copy; 2026 EMBEDDED SYSTEMS GROUP 2. KNUST RESEARCH DIVISION.</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="device-action-menu" id="deviceActionMenu" role="menu" aria-label="Device actions">
+        <button class="remove-action" id="removeDeviceBtn" type="button" role="menuitem">Remove Device</button>
+        <button class="close-action" id="closeDeviceMenuBtn" type="button" role="menuitem">Cancel</button>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="remove-device-modal.js"></script>
+    <script src="../theme-toggle.js"></script>
+</body>
+</html>

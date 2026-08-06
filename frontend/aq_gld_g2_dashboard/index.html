@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-GLD-G2 Firefighting & Telemetry System</title>
+    <!-- Google Fonts for Industrial Technical Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for technical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../theme-toggle.css">
+</head>
+
+<body>
+
+    <!-- TOP APPLICATION NAVBAR -->
+<header>
+    <div class="brand">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+          <rect x="9" y="9" width="6" height="6"></rect>
+          <line x1="9" y1="1" x2="9" y2="4"></line>
+          <line x1="15" y1="1" x2="15" y2="4"></line>
+          <line x1="9" y1="20" x2="9" y2="23"></line>
+          <line x1="15" y1="20" x2="15" y2="23"></line>
+          <line x1="20" y1="9" x2="23" y2="9"></line>
+          <line x1="20" y1="15" x2="23" y2="15"></line>
+          <line x1="1" y1="9" x2="4" y2="9"></line>
+          <line x1="1" y1="15" x2="4" y2="15"></line>
+        </svg>
+    </div>
+    <div class="text">
+    AQ-GLD-G2 <br>
+    <span class="subtext">Engineering Systems</span>  
+    </div>
+    </div>
+   <nav class="nav-tabs" id="navTabs">
+      <a href="#" class="tab-item active">
+        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Overview</span>
+      </a>
+      <a href="../Architecture-page/system-architecture-workflow.html" class="tab-item">
+        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+          <path d="M21 19c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+        </svg>
+        <span>Architecture</span>
+      </a>
+      <a href="../Architecture-page/hardware-overview.html" class="tab-item">
+        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Documentation</span>
+      </a>
+      <a href="../Architecture-page/project-team.html" class="tab-item">
+        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        </svg>
+        <span>Team</span>
+      </a>
+    </nav>
+        <div class="topbar-right">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+        <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+        <span class="theme-toggle__label">Dark</span>
+      </button>
+      <a href="../index.html" class="sign-in-link">Sign In</a>
+      <button class="support-btn">Support</button>
+    </div>
+     <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+  </header>
+
+    <!-- SCREEN DEMO / QUICK SELECT BAR (Allows jumping between all requested versions) -->
+    <div class="screen-switcher-bar">
+        <div class="switcher-container">
+            <span class="switcher-label"><i class="fa-solid fa-shapes"></i> SELECT SCREEN VIEW:</span>
+            <div class="switcher-buttons">
+                <button class="switch-btn active" data-target="screen-profile"><i class="fa-regular fa-user"></i>
+                    Profile (v.12)</button>
+                <button class="switch-btn" data-target="screen-notifications"><i class="fa-regular fa-bell"></i>
+                    Notifications (v.13)</button>
+                <button class="switch-btn" data-target="screen-hardware"><i class="fa-solid fa-microchip"></i> Hardware
+                    (v.14)</button>
+                <button class="switch-btn" data-target="screen-devices"><i class="fa-solid fa-hard-drive"></i> Devices
+                    (v.15)</button>
+                <button class="switch-btn" data-target="screen-alert-history-log"><i class="fa-solid fa-chart-line"></i>
+                    Alert History (v.10)</button>
+                <button class="switch-btn" data-target="screen-alert-history-empty"><i
+                        class="fa-solid fa-shield-halved"></i> Empty Alert (v.11)</button>
+                <button class="switch-btn" data-target="screen-404"><i class="fa-solid fa-triangle-exclamation"></i> 404
+                    (v.20)</button>
+                <button class="switch-btn" data-target="screen-500"><i class="fa-solid fa-wifi"></i> Disconnected
+                    (v.21)</button>
+                <button class="switch-btn highlight-btn" id="triggerSessionExpired"><i class="fa-solid fa-lock"></i>
+                    Session Expired (v.22)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER FOR SCREENS -->
+    <main class="app-main-content">
+        <div class="return">
+    <a href="../dashboard/index.html"><i class="fas fa-arrow-left"></i> retun to dashboard</a></div>
+        <!-- ================================================================= -->
+        <!-- SCREEN 1: PROFILE MANAGEMENT (v.12) -->
+        <!-- ================================================================= -->
+        <section id="screen-profile" class="screen-view active">
+            <div class="container">
+
+                <!-- Breadcrumb / Protocol Info -->
+                <div class="protocol-header">
+                    <div class="protocol-tag">STAKEHOLDER DASHBOARD V1.2</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> AUTHORIZED ACCESS ACTIVE</div>
+                </div>
+
+                <h1 class="page-title">ACCOUNT MANAGEMENT</h1>
+                <p class="page-description">
+                    Configure your administrative identity and notification endpoints. The parameters defined here
+                    dictate the destination for critical system telemetry and environmental safety alerts.
+                </p>
+
+                <!-- Two Column Layout: Sidebar Modules + Profile Settings Form -->
+                <div class="dashboard-grid">
+
+                    <!-- Left Sidebar Module Controls -->
+                    <aside class="module-sidebar">
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-title">SYSTEM MODULES</h3>
+                            <ul class="module-nav">
+                                <li class="module-item active" data-switch-view="screen-profile">
+                                    <i class="fa-solid fa-user-shield"></i> PROFILE
+                                </li>
+                                <li class="module-item" data-switch-view="screen-notifications">
+                                    <i class="fa-regular fa-bell"></i> NOTIFICATIONS
+                                </li>
+                                <li class="module-item" data-switch-view="screen-hardware">
+                                    <i class="fa-solid fa-sliders"></i> DEVICE CONFIG
+                                </li>
+                                <li class="module-item" data-switch-view="screen-devices">
+                                    <i class="fa-solid fa-laptop-medical"></i> MY DEVICES
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Dark Security Card -->
+                        <div class="dark-tech-card">
+                            <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h4 class="dark-card-title">SECURITY PROTOCOL</h4>
+                            <p class="dark-card-text">
+                                Changes to contact vectors require two-factor re-verification within 24 hours to
+                                maintain stakeholder status.
+                            </p>
+                        </div>
+                    </aside>
+
+                    <!-- Main Form Panel -->
+                    <div class="main-panel">
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="panel-title">PROFILE SETTINGS</h2>
+                                    <p class="panel-subtitle">Update your system identity and technical contact points
+                                        for automated reporting.</p>
+                                </div>
+                                <span class="badge badge-light">EDIT v1.2</span>
+                            </div>
+
+                            <!-- Twilio Connectivity Note -->
+                            <div class="alert-box alert-info">
+                                <i class="fa-solid fa-circle-info alert-icon"></i>
+                                <div>
+                                    <strong>TWILIO API CONNECTIVITY NOTE</strong>
+                                    <p>Emergency SMS and WhatsApp protocols require active Twilio SID verification.
+                                        Updates to communication parameters will undergo a 30-second propagation delay
+                                        across active nodes.</p>
+                                </div>
+                            </div>
+
+                            <!-- Profile Form Grid -->
+                            <form id="profileForm" class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="displayName"><i class="fa-regular fa-user"></i>
+                                        DISPLAY NAME</label>
+                                    <input type="text" id="displayName" class="form-control" value="Nii Adjetey"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="emailAddress"><i class="fa-regular fa-envelope"></i>
+                                        EMAIL ADDRESS</label>
+                                    <input type="email" id="emailAddress" class="form-control"
+                                        value="adjetey.n@knust.edu.gh" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="phoneNumber"><i
+                                            class="fa-solid fa-mobile-screen"></i> PHONE NUMBER (FOR SMS ALERTS)</label>
+                                    <input type="text" id="phoneNumber" class="form-control" value="+233 24 000 0000">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="whatsappNumber"><i class="fa-brands fa-whatsapp"></i>
+                                        WHATSAPP NUMBER</label>
+                                    <input type="text" id="whatsappNumber" class="form-control"
+                                        value="+233 24 000 0000">
+                                </div>
+                            </form>
+
+                            <!-- Save / Data Integrity Footer -->
+                            <div class="panel-footer">
+                                <div class="integrity-info">
+                                    <i class="fa-solid fa-shield-cat"></i>
+                                    <span><strong>Data Integrity:</strong> All updates are logged in the System Audit
+                                        Trail for compliance verification.</span>
+                                </div>
+                                <button type="button" class="btn btn-primary" id="btnSaveProfile">
+                                    <i class="fa-solid fa-floppy-disk"></i> SAVE CHANGES
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Extra Details Row -->
+                        <div class="sub-cards-grid">
+                            <div class="info-card-light">
+                                <div class="info-icon"><i class="fa-solid fa-lock"></i></div>
+                                <div>
+                                    <h5>2FA ENABLED</h5>
+                                    <p>Institutional SSO Integration (KNUST Azure credentials verified). Emergency
+                                        bypass options are currently restricted for administrative stakeholder accounts.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="dark-tech-card footer-card">
+                                <div class="tech-badge"><i class="fa-solid fa-microchip"></i> SYSTEM LOGS</div>
+                                <h5>SYSTEM LOGS</h5>
+                                <p>View your complete interactive logs in the AQ-GLD-G2 documentation repository.</p>
+                                <a href="#" class="tech-link">ACCESS AUDIT LOGS <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 2: NOTIFICATION PREFERENCES (v.13) -->
+        <!-- ================================================================= -->
+        <section id="screen-notifications" class="screen-view">
+            <div class="container">
+
+                <div class="protocol-header">
+                    <div class="protocol-tag">ENGINEERING SHELL V1.3</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> ALERT CONFIGURATION ACTIVE</div>
+                </div>
+
+                <h1 class="page-title">COMMUNICATION PREFERENCES</h1>
+                <p class="page-description">
+                    Define the automated transmission vectors for critical threshold alerts and system telemetry. These
+                    settings determine how the AQ-GLD-G2 framework interacts with stakeholders during environmental
+                    breaches.
+                </p>
+
+                <div class="dashboard-grid">
+
+                    <!-- Left Sidebar Nav -->
+                    <aside class="module-sidebar">
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-title">USER INTERFACE</h3>
+                            <ul class="module-nav">
+                                <li class="module-item" data-switch-view="screen-profile">
+                                    <i class="fa-regular fa-user"></i> PROFILE
+                                </li>
+                                <li class="module-item active" data-switch-view="screen-notifications">
+                                    <i class="fa-solid fa-bell"></i> NOTIFICATIONS
+                                </li>
+                                <li class="module-item" data-switch-view="screen-hardware">
+                                    <i class="fa-solid fa-sliders"></i> DEVICE CONFIG
+                                </li>
+                                <li class="module-item" data-switch-view="screen-devices">
+                                    <i class="fa-solid fa-laptop-medical"></i> MY DEVICES
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dark-tech-card">
+                            <div class="card-icon"><i class="fa-solid fa-shield-virus"></i></div>
+                            <h4 class="dark-card-title">SYSTEM INTEGRITY</h4>
+                            <p class="dark-card-text">
+                                High-priority atmospheric alerts override local channel suppressions to ensure
+                                stakeholder safety compliance.
+                            </p>
+                        </div>
+                    </aside>
+
+                    <!-- Notifications Main Content -->
+                    <div class="main-panel">
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <h2 class="panel-title">ALERT CHANNELS</h2>
+                                <button class="btn btn-outline btn-xs" id="btnToggleAllChannels">VOLTAGE
+                                    CONTROL</button>
+                            </div>
+                            <p class="panel-subtitle-margin">Enable or disable specific communication protocols for
+                                system-wide notifications.</p>
+
+                            <!-- Toggle Cards List -->
+                            <div class="toggle-cards-list">
+
+                                <!-- Channel 1 -->
+                                <div class="toggle-card">
+                                    <div class="channel-icon"><i class="fa-regular fa-envelope"></i></div>
+                                    <div class="channel-details">
+                                        <h4>EMAIL NOTIFICATIONS</h4>
+                                        <p>Receive detailed technical reports and alert summaries at your registered
+                                            institutional address.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleEmail" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <!-- Channel 2 -->
+                                <div class="toggle-card">
+                                    <div class="channel-icon"><i class="fa-solid fa-desktop"></i></div>
+                                    <div class="channel-details">
+                                        <h4>BROWSER PUSH / FCM</h4>
+                                        <p>Real-time browser notifications for immediate threshold breaches, powered by
+                                            Firebase Cloud Messaging.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="togglePush" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <!-- Channel 3 -->
+                                <div class="toggle-card">
+                                    <div class="channel-icon"><i class="fa-solid fa-comment-sms"></i></div>
+                                    <div class="channel-details">
+                                        <h4>SMS (TWILIO INTEGRATION)</h4>
+                                        <p>Automated text messages for critical danger-level events. SMS gateway
+                                            provided by Twilio API.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleSms">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                                <!-- Channel 4 -->
+                                <div class="toggle-card">
+                                    <div class="channel-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                                    <div class="channel-details">
+                                        <h4>WHATSAPP BUSINESS</h4>
+                                        <p>Direct messaging integration for mobile accessibility and high-priority alert
+                                            routing.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleWhatsapp">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <!-- Quiet Hours Section -->
+                            <div class="section-divider"></div>
+
+                            <div class="quiet-hours-header">
+                                <div>
+                                    <h3 class="panel-title">QUIET HOURS</h3>
+                                    <p class="panel-subtitle">Configure non-urgent notification suppression schedules
+                                        for low-priority events.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="toggleQuietHours" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div class="time-picker-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="quietStartTime">PROTOCOL START TIME</label>
+                                    <input type="time" id="quietStartTime" class="form-control" value="22:00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="quietEndTime">PROTOCOL END TIME</label>
+                                    <input type="time" id="quietEndTime" class="form-control" value="07:00">
+                                </div>
+                            </div>
+
+                            <div class="alert-box alert-info margin-top-md">
+                                <i class="fa-regular fa-clock alert-icon"></i>
+                                <div>
+                                    <strong>SCHEDULE OPERATIONAL LOGIC</strong>
+                                    <p>During quiet hours, only Push Notifications will fire for critical alerts.</p>
+                                </div>
+                            </div>
+
+                            <div class="panel-footer justify-between">
+                                <div class="latency-warning">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <span><strong>LATENCY WARNING:</strong> Changes may take up to 60 seconds to
+                                        propagate to all active hardware nodes.</span>
+                                </div>
+                                <div class="footer-btn-group">
+                                    <button type="button" class="btn btn-outline" id="btnResetDefaults">RESET
+                                        DEFAULTS</button>
+                                    <button type="button" class="btn btn-primary" id="btnUpdateProtocols">UPDATE
+                                        PROTOCOLS <i class="fa-solid fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="sub-cards-grid">
+                            <div class="info-card-light">
+                                <div class="info-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+                                <div>
+                                    <h5>READINESS MATRIX</h5>
+                                    <p>Review how different environmental thresholds (PPM) trigger specific
+                                        communication lines.</p>
+                                </div>
+                            </div>
+
+                            <div class="dark-tech-card footer-card">
+                                <div class="tech-badge"><i class="fa-solid fa-bolt"></i> ADVANCED OVERRIDE</div>
+                                <p>Configure manual overrides for lab testing or hardware maintenance cycles.</p>
+                                <a href="#" class="tech-link">MANUAL OVERRIDE CONTROL <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 3: HARDWARE CONFIGURATION (v.14) -->
+        <!-- ================================================================= -->
+        <section id="screen-hardware" class="screen-view">
+            <div class="container">
+
+                <div class="protocol-header">
+                    <div class="protocol-tag">HARDWARE PROTOCOL V1.4</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> SERIAL CONNECTIVITY: VERIFIED
+                    </div>
+                </div>
+
+                <h1 class="page-title">HARDWARE CONFIGURATION</h1>
+                <p class="page-description">
+                    Calibrate sensor sensitivity levels and define local audible response protocols. These parameters
+                    are flashed directly to the MCU firmware for low-latency emergency actuation.
+                </p>
+
+                <div class="dashboard-grid">
+
+                    <aside class="module-sidebar">
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-title">MODULE SETTINGS</h3>
+                            <ul class="module-nav">
+                                <li class="module-item" data-switch-view="screen-profile">
+                                    <i class="fa-regular fa-user"></i> PROFILE
+                                </li>
+                                <li class="module-item" data-switch-view="screen-notifications">
+                                    <i class="fa-regular fa-bell"></i> NOTIFICATIONS
+                                </li>
+                                <li class="module-item active" data-switch-view="screen-hardware">
+                                    <i class="fa-solid fa-sliders"></i> DEVICE CONFIG
+                                </li>
+                                <li class="module-item" data-switch-view="screen-devices">
+                                    <i class="fa-solid fa-laptop-medical"></i> MY DEVICES
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dark-tech-card">
+                            <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <h4 class="dark-card-title">SAFETY LOCK</h4>
+                            <p class="dark-card-text">
+                                Modifying threshold values requires administrative clearance. All configuration passes
+                                are logged in the central audit repository.
+                            </p>
+                        </div>
+                    </aside>
+
+                    <div class="main-panel">
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="panel-title">SENSOR DANGER THRESHOLDS</h2>
+                                    <p class="panel-subtitle">Define the Parts Per Million (PPM) values that trigger
+                                        immediate critical status alerts and local buzzer activation.</p>
+                                </div>
+                                <button class="btn btn-outline btn-xs" id="btnCalibrate">RUN CALIBRATION</button>
+                            </div>
+
+                            <!-- Sliders Container -->
+                            <div class="sliders-list">
+
+                                <!-- MQ-2 Sensor -->
+                                <div class="sensor-slider-card">
+                                    <div class="sensor-info">
+                                        <div class="sensor-header">
+                                            <i class="fa-solid fa-smog sensor-icon"></i>
+                                            <div>
+                                                <h5>MQ-2 SENSOR</h5>
+                                                <span class="sensor-sub">FLAMMABLE GAS / SMOKE DETECTOR</span>
+                                            </div>
+                                        </div>
+                                        <div class="ppm-badge">
+                                            <span id="valMq2">300</span> <small>PPM</small>
+                                        </div>
+                                    </div>
+                                    <div class="range-wrapper">
+                                        <input type="range" id="rangeMq2" min="0" max="1000" value="300"
+                                            class="custom-range">
+                                    </div>
+                                    <div class="range-labels">
+                                        <span>Default: 300PPM</span>
+                                        <span>RANGE: 0 - 1000 PPM</span>
+                                    </div>
+                                </div>
+
+                                <!-- MQ-5 Sensor -->
+                                <div class="sensor-slider-card">
+                                    <div class="sensor-info">
+                                        <div class="sensor-header">
+                                            <i class="fa-solid fa-fire-burner sensor-icon"></i>
+                                            <div>
+                                                <h5>MQ-5 SENSOR</h5>
+                                                <span class="sensor-sub">LPG / NATURAL GAS SENSOR</span>
+                                            </div>
+                                        </div>
+                                        <div class="ppm-badge">
+                                            <span id="valMq5">450</span> <small>PPM</small>
+                                        </div>
+                                    </div>
+                                    <div class="range-wrapper">
+                                        <input type="range" id="rangeMq5" min="0" max="1000" value="450"
+                                            class="custom-range">
+                                    </div>
+                                    <div class="range-labels">
+                                        <span>Default: 300PPM</span>
+                                        <span>RANGE: 0 - 1000 PPM</span>
+                                    </div>
+                                </div>
+
+                                <!-- MQ-7 Sensor -->
+                                <div class="sensor-slider-card">
+                                    <div class="sensor-info">
+                                        <div class="sensor-header">
+                                            <i class="fa-solid fa-skull-crossbones sensor-icon"></i>
+                                            <div>
+                                                <h5>MQ-7 SENSOR</h5>
+                                                <span class="sensor-sub">CARBON MONOXIDE (CO) DETECTOR</span>
+                                            </div>
+                                        </div>
+                                        <div class="ppm-badge">
+                                            <span id="valMq7">150</span> <small>PPM</small>
+                                        </div>
+                                    </div>
+                                    <div class="range-wrapper">
+                                        <input type="range" id="rangeMq7" min="0" max="1000" value="150"
+                                            class="custom-range">
+                                    </div>
+                                    <div class="range-labels">
+                                        <span>Default: 150PPM</span>
+                                        <span>RANGE: 0 - 1000 PPM</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Buzzer Auto Shutoff Options -->
+                            <div class="section-divider"></div>
+
+                            <h3 class="panel-title"><i class="fa-solid fa-volume-high"></i> BUZZER AUTO-SHUTOFF</h3>
+                            <p class="panel-subtitle-margin">Define the duration the local alarm should sound before
+                                entering a silent-monitoring state if stimulus persists.</p>
+
+                            <div class="radio-cards-grid">
+                                <label class="radio-card active">
+                                    <input type="radio" name="buzzerDuration" value="4" checked>
+                                    <div class="radio-content">
+                                        <div class="radio-title">4 MINUTES</div>
+                                        <div class="radio-sub">Standard Protocol Duration</div>
+                                    </div>
+                                    <div class="radio-indicator"></div>
+                                </label>
+
+                                <label class="radio-card">
+                                    <input type="radio" name="buzzerDuration" value="8">
+                                    <div class="radio-content">
+                                        <div class="radio-title">8 MINUTES</div>
+                                        <div class="radio-sub">Extended Alert Duration</div>
+                                    </div>
+                                    <div class="radio-indicator"></div>
+                                </label>
+                            </div>
+
+                            <!-- Device Location Input -->
+                            <div class="form-group margin-top-md">
+                                <label class="form-label" for="deviceLocation"><i class="fa-solid fa-location-dot"></i>
+                                    DEVICE LOCATION NAME</label>
+                                <input type="text" id="deviceLocation" class="form-control"
+                                    placeholder="e.g. Kitchen, Lab A, Warehouse" value="Lab A - Main Facility">
+                                <span class="form-hint">This identifier will be prepended to all system logs and visual
+                                    notification payloads.</span>
+                            </div>
+
+                            <!-- Footer Bar -->
+                            <div class="panel-footer justify-between">
+                                <div class="integrity-info">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                    <div>
+                                        <strong>SERIAL SYNC PROTOCOL:</strong>
+                                        <br><span>Configuration will be flashed via MQTT and acknowledged by the device
+                                            MCU.</span>
+                                    </div>
+                                </div>
+                                <div class="footer-btn-group">
+                                    <button type="button" class="btn btn-outline" id="btnDiscardHardware">DISCARD
+                                        CHANGES</button>
+                                    <button type="button" class="btn btn-primary" id="btnPushConfig">PUSH CONFIG TO
+                                        DEVICE <i class="fa-solid fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 4: MY DEVICES (v.15) -->
+        <!-- ================================================================= -->
+        <section id="screen-devices" class="screen-view">
+            <div class="container">
+
+                <div class="protocol-header">
+                    <div class="protocol-tag">HARDWARE REGISTRY V1.5</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> ENCRYPTION: AES-256</div>
+                </div>
+
+                <div class="page-title-row">
+                    <div>
+                        <h1 class="page-title">MY DEVICES</h1>
+                        <p class="page-description">
+                            Manage your registered AQ-GLD-G2 hardware units. Assign nicknames for lab identification and
+                            select the primary node for your real-time telemetry dashboard view.
+                        </p>
+                    </div>
+                    <button class="btn btn-primary" id="btnAddDeviceModalTrigger"><i class="fa-solid fa-plus"></i> ADD
+                        NEW DEVICE</button>
+                </div>
+
+                <div class="dashboard-grid">
+
+                    <aside class="module-sidebar">
+                        <div class="sidebar-card">
+                            <h3 class="sidebar-title">SETTINGS CONSOLE</h3>
+                            <ul class="module-nav">
+                                <li class="module-item" data-switch-view="screen-profile">
+                                    <i class="fa-regular fa-user"></i> PROFILE
+                                </li>
+                                <li class="module-item" data-switch-view="screen-notifications">
+                                    <i class="fa-regular fa-bell"></i> NOTIFICATIONS
+                                </li>
+                                <li class="module-item" data-switch-view="screen-hardware">
+                                    <i class="fa-solid fa-sliders"></i> DEVICE CONFIG
+                                </li>
+                                <li class="module-item active" data-switch-view="screen-devices">
+                                    <i class="fa-solid fa-laptop-medical"></i> MY DEVICES
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dark-tech-card">
+                            <div class="card-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                            <h4 class="dark-card-title">READONLY HOURS</h4>
+                            <p class="dark-card-text">
+                                Hardware identifiers are cryptographically linked to your stakeholder identity. Display
+                                versions store historical cloud-synchronized logs from this account.
+                            </p>
+                        </div>
+                    </aside>
+
+                    <div class="main-panel">
+                        <div class="panel-card">
+
+                            <!-- Devices Table -->
+                            <div class="table-responsive">
+                                <table class="tech-table">
+                                    <thead>
+                                        <tr>
+                                            <th>HARDWARE</th>
+                                            <th>NICKNAME</th>
+                                            <th>DEVICE ID</th>
+                                            <th>STATUS</th>
+                                            <th>DASHBOARD</th>
+                                            <th>ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="device-thumb"><i class="fa-solid fa-microchip"></i></div>
+                                            </td>
+                                            <td><strong>Lab A - Main Monitor</strong></td>
+                                            <td><span class="code-tag">AQ-GLD-G2-0042</span></td>
+                                            <td><span class="badge badge-success"><span class="dot"></span>
+                                                    ONLINE</span></td>
+                                            <td>
+                                                <label class="radio-custom">
+                                                    <input type="radio" name="primaryDashboard" checked>
+                                                    <span class="radio-mark"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <button class="btn-icon" title="Device Settings"><i
+                                                        class="fa-solid fa-ellipsis-vertical"></i></button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div class="device-thumb"><i class="fa-solid fa-wifi"></i></div>
+                                            </td>
+                                            <td><strong>Mobile Unit 01</strong></td>
+                                            <td><span class="code-tag">AQ-GLD-G2-0035</span></td>
+                                            <td><span class="badge badge-success"><span class="dot"></span>
+                                                    ONLINE</span></td>
+                                            <td>
+                                                <label class="radio-custom">
+                                                    <input type="radio" name="primaryDashboard">
+                                                    <span class="radio-mark"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <button class="btn-icon" title="Device Settings"><i
+                                                        class="fa-solid fa-ellipsis-vertical"></i></button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div class="device-thumb offline-thumb"><i
+                                                        class="fa-solid fa-server"></i></div>
+                                            </td>
+                                            <td><strong>Server Room B</strong></td>
+                                            <td><span class="code-tag">AQ-GLD-G2-0018</span></td>
+                                            <td><span class="badge badge-danger"><span class="dot"></span>
+                                                    OFFLINE</span></td>
+                                            <td>
+                                                <label class="radio-custom">
+                                                    <input type="radio" name="primaryDashboard">
+                                                    <span class="radio-mark"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <button class="btn-icon" title="Device Settings"><i
+                                                        class="fa-solid fa-ellipsis-vertical"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="sub-cards-grid">
+                            <div class="info-card-light">
+                                <div class="info-icon"><i class="fa-solid fa-circle-info"></i></div>
+                                <div>
+                                    <h5>TECHNICAL DOCUMENTATION</h5>
+                                    <p>All paired sensors must maintain firmware version v2.1.0 or higher for full
+                                        dashboard compatibility and automated threshold response.</p>
+                                </div>
+                            </div>
+
+                            <div class="dark-tech-card footer-card">
+                                <div class="tech-badge"><i class="fa-solid fa-shield-halved"></i> SYSTEM SECURITY</div>
+                                <p>Hardware authentication is performed over a secure MQTT bridge. Ensure your local
+                                    gateway is authorized.</p>
+                                <a href="#" class="tech-link">VIEW AUDIT LOGS <i
+                                        class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 5: ALERT HISTORY - DATA LOGGED (v.10) -->
+        <!-- ================================================================= -->
+        <section id="screen-alert-history-log" class="screen-view">
+            <div class="container">
+
+                <div class="protocol-header">
+                    <div class="protocol-tag">SYSTEM AUDIT LOG V1.0</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> NODE ID: AQ-GLD-G2</div>
+                </div>
+
+                <div class="alert-history-top">
+                    <div>
+                        <h1 class="page-title">ALERT HISTORY</h1>
+                        <p class="page-description">
+                            Comprehensive technical log of atmospheric threshold breaches and automated response
+                            protocols. Data persists for 365 days in high-integrity storage for academic and industrial
+                            safety compliance.
+                        </p>
+                    </div>
+                    <!-- Circuit Board Technical Image Box -->
+                    <div class="hardware-graphic-box">
+                        <div class="hardware-graphic-inner">
+                            <i class="fa-solid fa-microchip hw-icon"></i>
+                            <span class="hw-label">AQ-GLD-G2 HARDWARE NODE</span>
+                            <span class="hw-sub">STM32 MCU + MQ SENSOR ARRAY</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Filters Bar -->
+                <div class="filter-card">
+                    <div class="filter-grid">
+                        <div class="search-input-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="alertSearchInput" class="form-control"
+                                placeholder="Search Alert ID or Sensor...">
+                        </div>
+
+                        <select id="filterDateRange" class="form-control select-control">
+                            <option value="30">Range: Last 30 Days</option>
+                            <option value="7">Range: Last 7 Days</option>
+                            <option value="1">Range: Last 24 Hours</option>
+                        </select>
+
+                        <select id="filterSensor" class="form-control select-control">
+                            <option value="ALL">Sensor: All Sensors</option>
+                            <option value="MQ-2">MQ-2 (Smoke/LPG)</option>
+                            <option value="MQ-5">MQ-5 (Natural Gas)</option>
+                            <option value="MQ-7">MQ-7 (CO)</option>
+                        </select>
+
+                        <select id="filterSeverity" class="form-control select-control">
+                            <option value="ALL">Severity: All Levels</option>
+                            <option value="DANGER">DANGER</option>
+                            <option value="WARNING">WARNING</option>
+                            <option value="RESOLVED">RESOLVED</option>
+                        </select>
+
+                        <button class="btn btn-primary" id="btnExportCsv"><i class="fa-solid fa-download"></i> EXPORT TO
+                            CSV</button>
+                    </div>
+                </div>
+
+                <!-- Logs Table Section -->
+                <div class="panel-card margin-top-md">
+                    <div class="panel-header">
+                        <h2 class="panel-title"><i class="fa-solid fa-list-check"></i> ALERT LOG ENTRIES</h2>
+                        <span class="panel-subtitle">Showing 5 of 1,542 records</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="tech-table" id="alertsTable">
+                            <thead>
+                                <tr>
+                                    <th>TIMESTAMP <i class="fa-solid fa-sort"></i></th>
+                                    <th>SENSOR MODULE</th>
+                                    <th>PEAK PPM</th>
+                                    <th>SEVERITY</th>
+                                    <th>DURATION</th>
+                                    <th>NOTIFICATIONS</th>
+                                    <th>MITIGATION PROTOCOL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-sensor="MQ-2" data-severity="DANGER">
+                                    <td><span class="time-stamp">2026-07-12 14:27:01</span></td>
+                                    <td><strong>MQ-2 (Smoke/LPG)</strong><br><small class="text-muted">AQ-0042</small>
+                                    </td>
+                                    <td><span class="ppm-val text-danger">450 PPM</span></td>
+                                    <td><span class="badge badge-danger">DANGER</span></td>
+                                    <td>23m 45s</td>
+                                    <td>
+                                        <span class="icon-group"><i class="fa-regular fa-envelope" title="Email"></i> <i
+                                                class="fa-solid fa-mobile-screen" title="SMS"></i> <i
+                                                class="fa-brands fa-whatsapp" title="WhatsApp"></i></span>
+                                    </td>
+                                    <td><span class="protocol-tag-inline">Auto-Ventilation Engaged</span></td>
+                                </tr>
+
+                                <tr data-sensor="MQ-7" data-severity="WARNING">
+                                    <td><span class="time-stamp">2026-07-12 09:15:32</span></td>
+                                    <td><strong>MQ-7 (CO)</strong><br><small class="text-muted">AQ-0035</small></td>
+                                    <td><span class="ppm-val text-warning">170 PPM</span></td>
+                                    <td><span class="badge badge-warning">WARNING</span></td>
+                                    <td>12m 10s</td>
+                                    <td>
+                                        <span class="icon-group"><i class="fa-regular fa-envelope"></i> <i
+                                                class="fa-solid fa-desktop"></i></span>
+                                    </td>
+                                    <td><span class="protocol-tag-inline">Manual Shutdown</span></td>
+                                </tr>
+
+                                <tr data-sensor="MQ-5" data-severity="DANGER">
+                                    <td><span class="time-stamp">2026-07-11 22:48:10</span></td>
+                                    <td><strong>MQ-5 (Natural Gas)</strong><br><small class="text-muted">AQ-0018</small>
+                                    </td>
+                                    <td><span class="ppm-val text-danger">310 PPM</span></td>
+                                    <td><span class="badge badge-danger">DANGER</span></td>
+                                    <td>45m 20s</td>
+                                    <td>
+                                        <span class="icon-group"><i class="fa-regular fa-envelope"></i> <i
+                                                class="fa-solid fa-mobile-screen"></i> <i
+                                                class="fa-brands fa-whatsapp"></i></span>
+                                    </td>
+                                    <td><span class="protocol-tag-inline">Technician Verified</span></td>
+                                </tr>
+
+                                <tr data-sensor="MQ-2" data-severity="RESOLVED">
+                                    <td><span class="time-stamp">2026-07-11 16:30:15</span></td>
+                                    <td><strong>MQ-2 (Smoke/LPG)</strong><br><small class="text-muted">AQ-0042</small>
+                                    </td>
+                                    <td><span class="ppm-val text-success">95 PPM</span></td>
+                                    <td><span class="badge badge-success">RESOLVED</span></td>
+                                    <td>03m 15s</td>
+                                    <td>
+                                        <span class="icon-group"><i class="fa-regular fa-envelope"></i></span>
+                                    </td>
+                                    <td><span class="protocol-tag-inline">Baseline Reached</span></td>
+                                </tr>
+
+                                <tr data-sensor="MQ-7" data-severity="WARNING">
+                                    <td><span class="time-stamp">2026-07-11 11:10:22</span></td>
+                                    <td><strong>MQ-7 (CO)</strong><br><small class="text-muted">AQ-0035</small></td>
+                                    <td><span class="ppm-val text-warning">155 PPM</span></td>
+                                    <td><span class="badge badge-warning">WARNING</span></td>
+                                    <td>08m 40s</td>
+                                    <td>
+                                        <span class="icon-group"><i class="fa-regular fa-envelope"></i> <i
+                                                class="fa-solid fa-desktop"></i></span>
+                                    </td>
+                                    <td><span class="protocol-tag-inline">System Reset</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- READING HISTORY CHART PANEL -->
+                <div class="chart-and-stats-grid margin-top-md">
+                    <div class="panel-card chart-panel">
+                        <div class="panel-header">
+                            <div>
+                                <h3 class="panel-title"><i class="fa-solid fa-chart-area"></i> READING HISTORY CHART
+                                </h3>
+                                <p class="panel-subtitle">Peak concentration levels for filtered sensor nodes.</p>
+                            </div>
+                            <div class="pill-tabs">
+                                <button class="pill-tab active" data-chart-range="24h">LAST 24 HOURS</button>
+                                <button class="pill-tab" data-chart-range="7d">LAST 7 DAYS</button>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Chart Container -->
+                        <div class="canvas-wrapper">
+                            <canvas id="telemetryChart" height="260"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="legend-box peak-box"></span> Peak PPM Level</span>
+                            <span class="legend-item"><span class="legend-box threshold-box"></span> Critical Threshold
+                                (300 PPM)</span>
+                        </div>
+                    </div>
+
+                    <!-- Side Stats & Protocol Card -->
+                    <div class="stats-side-panel">
+                        <div class="stat-card-light">
+                            <span class="stat-label">Highest Breach</span>
+                            <div class="stat-big-val text-danger">450 <small>PPM</small></div>
+                            <span class="stat-sub"><i class="fa-solid fa-caret-up"></i> 15% from previous period</span>
+                        </div>
+
+                        <div class="stat-card-light margin-top-sm">
+                            <span class="stat-label">Avg Duration</span>
+                            <div class="stat-big-val">06:42 <small>MIN:SEC</small></div>
+                        </div>
+
+                        <div class="dark-tech-card margin-top-sm">
+                            <div class="tech-badge"><i class="fa-solid fa-shield"></i> ALERT PROTOCOL</div>
+                            <p class="dark-card-text">
+                                Threshold breaches exceeding 400 PPM require mandatory ventilation confirmation and
+                                manual system acknowledgment within 15 minutes.
+                            </p>
+                            <button class="btn btn-outline-light btn-xs margin-top-xs"
+                                id="btnAcknowledgeSafety">ACKNOWLEDGE PROTOCOL</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 6: ALERT HISTORY - EMPTY STATE (v.11) -->
+        <!-- ================================================================= -->
+        <section id="screen-alert-history-empty" class="screen-view">
+            <div class="container">
+
+                <div class="protocol-header">
+                    <div class="protocol-tag">SYSTEM AUDIT LOG V1.1</div>
+                    <div class="protocol-status"><span class="status-indicator"></span> MODE: INTACT / ZERO BREACHES
+                    </div>
+                </div>
+
+                <div class="alert-history-top">
+                    <div>
+                        <h1 class="page-title">ALERT HISTORY</h1>
+                        <p class="page-description">
+                            Comprehensive technical log of atmospheric threshold breaches and automated response
+                            protocols. Data persists for 365 days in high-integrity storage for academic and industrial
+                            safety compliance.
+                        </p>
+                    </div>
+                    <div class="hardware-graphic-box">
+                        <div class="hardware-graphic-inner">
+                            <i class="fa-solid fa-microchip hw-icon"></i>
+                            <span class="hw-label">AQ-GLD-G2 HARDWARE NODE</span>
+                            <span class="hw-sub">SYSTEM HEALTH: 100% NOMINAL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State Hero Box -->
+                <div class="panel-card empty-state-box">
+                    <div class="empty-icon-shield">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h2 class="empty-title">NO ALERTS RECORDED.</h2>
+                    <p class="empty-desc">
+                        Your environment has been completely safe. We will log any future incidents here.
+                    </p>
+                </div>
+
+                <!-- Empty State Chart -->
+                <div class="chart-and-stats-grid margin-top-md">
+                    <div class="panel-card chart-panel">
+                        <div class="panel-header">
+                            <div>
+                                <h3 class="panel-title"><i class="fa-solid fa-chart-line"></i> BASELINE TELEMETRY</h3>
+                                <p class="panel-subtitle">Ambient PPM levels recorded across 24 hours.</p>
+                            </div>
+                            <div class="pill-tabs">
+                                <button class="pill-tab active">LAST 24 HOURS</button>
+                                <button class="pill-tab">LAST 7 DAYS</button>
+                            </div>
+                        </div>
+
+                        <div class="canvas-wrapper">
+                            <canvas id="telemetryChartEmpty" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stats-side-panel">
+                        <div class="stat-card-light">
+                            <span class="stat-label">Active Alerts</span>
+                            <div class="stat-big-val text-success">0 <small>EVENTS</small></div>
+                            <span class="stat-sub"><i class="fa-solid fa-check"></i> System Nominal</span>
+                        </div>
+
+                        <div class="stat-card-light margin-top-sm">
+                            <span class="stat-label">Avg Reading</span>
+                            <div class="stat-big-val">22.4 <small>PPM</small></div>
+                        </div>
+
+                        <div class="dark-tech-card margin-top-sm">
+                            <div class="tech-badge"><i class="fa-solid fa-shield"></i> AUDIT PROTOCOL</div>
+                            <p class="dark-card-text">
+                                Threshold breaches exceeding 300 PPM require mandatory ventilation confirmation and
+                                manual system acknowledgment within 15 minutes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 7: 404 PAGE NOT FOUND (v.20) -->
+        <!-- ================================================================= -->
+        <section id="screen-404" class="screen-view">
+            <div class="container error-container">
+
+                <div class="protocol-header center-header">
+                    <div class="protocol-tag text-danger"><i class="fa-solid fa-bug"></i> SYSTEM / PROTOCOL ERROR 404
+                    </div>
+                    <div class="protocol-status">PAGE NOT FOUND</div>
+                </div>
+
+                <div class="error-card-404">
+                    <!-- Bold Graphic Box -->
+                    <div class="graphic-404-box">
+                        <div class="graphic-yellow-bg">
+                            <i class="fa-solid fa-magnifying-glass graphic-mag"></i>
+                            <span class="graphic-sub-text">404 TARGET</span>
+                        </div>
+                    </div>
+
+                    <!-- Error Text Details -->
+                    <div class="error-text-content">
+                        <h1 class="error-code">404</h1>
+                        <h2 class="error-heading">TARGET NOT FOUND</h2>
+                        <p class="error-message">
+                            Oops! We can't seem to find the page you're looking for. The requested resource may have
+                            been relocated or purged from the architecture.
+                        </p>
+
+                        <div class="error-btn-group">
+                            <button class="btn btn-primary" data-switch-view="screen-profile">
+                                <i class="fa-solid fa-house"></i> BACK TO MAIN DASHBOARD
+                            </button>
+                            <button class="btn btn-outline" id="btnPreviousState">
+                                <i class="fa-solid fa-rotate-left"></i> PREVIOUS STATE
+                            </button>
+                        </div>
+
+                        <div class="error-notice-card margin-top-md">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <div>
+                                <strong>UNRESOLVED ROUTING:</strong>
+                                <p>Unresolved routing decisions are sometimes logged for administrative review. Ensure
+                                    your role retains access to target admin endpoints.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 8: SERVER CONNECTION ERROR (v.21) -->
+        <!-- ================================================================= -->
+        <section id="screen-500" class="screen-view">
+            <div class="container error-container">
+
+                <div class="protocol-header center-header">
+                    <div class="protocol-tag text-danger"><i class="fa-solid fa-wifi"></i> SOCKET DISCONNECTED</div>
+                    <div class="protocol-status">ERR_CONNECTION_REFUSED</div>
+                </div>
+
+                <div class="error-card-500">
+                    <!-- Connection lost illustration container -->
+                    <div class="connection-lost-graphic">
+                        <div class="pink-frame">
+                            <i class="fa-solid fa-mobile-screen-button mobile-icon-disconnect"></i>
+                            <div class="signal-cross"><i class="fa-solid fa-slash"></i></div>
+                        </div>
+                    </div>
+
+                    <h2 class="connection-heading">CONNECTION LOST</h2>
+                    <p class="connection-desc">
+                        We are unable to reach the backend sensor server to fetch live sensor telemetry data. This may
+                        be due to scheduled maintenance or a network interruption.
+                    </p>
+
+                    <!-- Alert protocol box -->
+                    <div class="alert-box alert-info margin-top-md text-left">
+                        <i class="fa-solid fa-shield-cat alert-icon"></i>
+                        <div>
+                            <strong>SAFETY PROTOCOLS: HARDWARE AUTONOMY ACTIVE</strong>
+                            <p><strong>Offline Mode:</strong> Your physical hardware device continues to operate
+                                locally. The buzzer and relays will all function in the event of a gas breach,
+                                independent of this server connection.</p>
+                        </div>
+                    </div>
+
+                    <div class="error-btn-group justify-center margin-top-md">
+                        <button class="btn btn-primary" id="btnManualReconnect">
+                            <i class="fa-solid fa-rotate"></i> MANUAL RECONNECT
+                        </button>
+                        <button class="btn btn-outline" id="btnSystemDiagnostics">
+                            <i class="fa-solid fa-stethoscope"></i> SYSTEM DIAGNOSTICS
+                        </button>
+                    </div>
+
+                    <div class="sub-notice-card margin-top-md">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>If the connection problem persists for more than 15 minutes, please contact the system
+                            administrator for hardware gateway calibration.</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- SCREEN 9: SESSION EXPIRED MODAL OVERLAY (v.22) -->
+    <!-- ================================================================= -->
+    <div class="modal-overlay" id="sessionExpiredModal">
+        <div class="modal-card">
+            <button class="modal-close" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
+
+            <div class="lock-icon-box">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div class="modal-tag"><i class="fa-solid fa-shield-halved"></i> SECURITY LOCK ACTIVE</div>
+            <h2 class="modal-title">SESSION EXPIRED</h2>
+            <p class="modal-desc">
+                For your security, your session has timed out. Please enter your password to resume monitoring.
+            </p>
+
+            <form id="sessionReauthForm" class="margin-top-md">
+                <div class="form-group text-left">
+                    <label class="form-label" for="reauthEmail">AUTHENTICATE AS USER</label>
+                    <input type="email" id="reauthEmail" class="form-control" value="adjetey.n@knust.edu.gh" readonly>
+                </div>
+
+                <div class="form-group text-left margin-top-sm">
+                    <label class="form-label" for="reauthPassword">ENTER CREDENTIALS</label>
+                    <div class="input-password-wrapper">
+                        <input type="password" id="reauthPassword" class="form-control" placeholder="••••••••••••"
+                            required>
+                        <button type="button" class="btn-toggle-pw" id="btnTogglePw"><i
+                                class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block margin-top-md" id="btnReauthSubmit">
+                    UNLOCK DASHBOARD <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="modal-links margin-top-sm">
+                <a href="#" id="linkLogout">Not you? Log out</a>
+            </div>
+
+            <div class="modal-footer-notice margin-top-md">
+                <i class="fa-solid fa-circle-info"></i>
+                <span><strong>AUTOMATIC LOCKOUT:</strong> Inactive sessions automatically lock to prevent unauthorized
+                    changes to critical threshold settings.</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ADD DEVICE MODAL -->
+    <div class="modal-overlay" id="addDeviceModal">
+        <div class="modal-card">
+            <button class="modal-close" id="btnCloseAddDeviceModal"><i class="fa-solid fa-xmark"></i></button>
+
+            <div class="lock-icon-box">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+
+            <h2 class="modal-title">REGISTER NEW DEVICE</h2>
+            <p class="modal-desc">Pair a new AQ-GLD-G2 sensor node to your administrative account.</p>
+
+            <form id="addDeviceForm" class="margin-top-md text-left">
+                <div class="form-group">
+                    <label class="form-label" for="newDeviceNickname">DEVICE NICKNAME</label>
+                    <input type="text" id="newDeviceNickname" class="form-control"
+                        placeholder="e.g. Lab B - Gas Monitor" required>
+                </div>
+                <div class="form-group margin-top-sm">
+                    <label class="form-label" for="newDeviceId">HARDWARE ID / MAC ADDRESS</label>
+                    <input type="text" id="newDeviceId" class="form-control" placeholder="AQ-GLD-G2-XXXX" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block margin-top-md">PAIR HARDWARE NODE</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SHARED APPLICATION FOOTER -->
+    <footer class="app-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-brand">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span id="footerShellTitle">AQ-GLD-G2 PROFILE CONFIGURATION</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">IDENTITY POLICY</a>
+                    <a href="#">PRIVACY FRAMEWORK</a>
+                    <a href="#">STAKEHOLDER HELP</a>
+                    <a href="#">SECURITY PROTOCOL</a>
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <span>© 2026 EMBEDDED SYSTEMS GROUP 2. V1.2.0 STABLE</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="device-action-menu.js"></script>
+    <script src="../theme-toggle.js"></script>
+</body>
+
+</html>

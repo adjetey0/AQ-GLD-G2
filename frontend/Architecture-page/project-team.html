@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Team · AQ-GLD-G2</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="../theme-toggle.css">
+  <style>
+    :root {
+      --ink: #12161c;
+      --navy: #1c2733;
+      --navy-deep: #141b23;
+      --accent: #2f5faa;
+      --accent-bright: #3f76c9;
+      --accent-soft: #c8d6ea;
+      --paper: #f3f4f6;
+      --card: #ffffff;
+      --line: #dfe2e8;
+      --muted: #6b7280;
+      --mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+      --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 32px 0;
+    }
+
+    .top-rule {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 0 0 44px;
+    }
+
+    .back-sign {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--navy);
+      cursor: pointer;
+      margin-bottom: 18px;
+      user-select: none;
+    }
+
+    .back-sign:hover {
+      color: var(--accent);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: stretch;
+    }
+
+    @media(max-width:900px) {
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- left: project team ---------- */
+    .team-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 14px;
+    }
+
+    .col-title .swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .col-title .swatch svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .col-rule {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 0 0 26px;
+    }
+
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .avatar svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .member-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 3px;
+    }
+
+    .member-role {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .meta-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .meta-pill svg {
+      width: 13px;
+      height: 13px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    /* ---------- right: academic verification ---------- */
+    .verify-card {
+      position: relative;
+      background: var(--navy-deep);
+      border-left: 4px solid var(--accent-bright);
+      border-radius: 6px;
+      padding: 34px 34px 30px;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chip-icon {
+      position: absolute;
+      top: -14px;
+      right: 0px;
+      width: 120px;
+      height: 120px;
+      opacity: .10;
+    }
+
+    .chip-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: #fff;
+      fill: none;
+    }
+
+    .verify-title {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 0 0 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .verify-quote {
+      font-style: italic;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: #dbe2ea;
+      margin: 0 0 26px;
+      max-width: 520px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .verify-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .verify-divider .line {
+      flex: 1;
+      border-top: 1px solid #33404f;
+    }
+
+    .verify-divider .label {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #8b98a8;
+      white-space: nowrap;
+    }
+
+    .verify-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 14px 18px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: #3a4856;
+      color: #fff;
+    }
+
+    body[data-theme="dark"] .btn-ghost {
+      border-color: var(--theme-border);
+      color: var(--theme-text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    body[data-theme="dark"] .btn-solid {
+      color: var(--theme-inverse);
+      background: var(--theme-surface);
+    }
+
+    .btn-ghost:hover {
+      background: #1f2a35;
+    }
+
+    .btn-solid {
+      background: #fff;
+      color: var(--navy-deep);
+    }
+
+    .btn-solid:hover {
+      opacity: .9;
+    }
+
+    /* ---------- footer bar ---------- */
+    footer.site-footer {
+      margin-top: 56px;
+      border-top: 1px solid var(--line);
+      padding: 22px 0;
+    }
+
+    body[data-theme="dark"] footer.site-footer {
+      border-color: var(--theme-border);
+      background: transparent;
+    }
+
+    .footer-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .footer-brand svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: .03em;
+      color: var(--muted);
+    }
+
+    @media(max-width:700px) {
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="back-sign" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><button class="theme-toggle" id="themeToggle"
+      type="button" aria-label="Toggle dark mode"><span class="theme-toggle__icon" aria-hidden="true">🌙</span><span
+        class="theme-toggle__label">Dark</span></button></div>
+  <div class="page">
+    <hr class="top-rule">
+
+    <div class="team-grid">
+
+      <!-- Project Team -->
+      <div class="team-col">
+        <p class="col-title">
+          <span class="swatch"><svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+            </svg></span>
+          Project Team
+        </p>
+        <hr class="col-rule">
+
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Prepared by Nii Adjetey</p>
+            <p class="member-role">Project Team Lead &amp; Lead System Architect</p>
+          </div>
+        </div>
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Baffour Brenya Agyenim Boateng</p>
+            <p class="member-role">Web app Developer</p>
+          </div>
+        </div>
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Senam</p>
+            <p class="member-role">UI/UX Designer</p>
+          </div>
+        </div>
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Skytech</p>
+            <p class="member-role">Web App Developer</p>
+          </div>
+        </div>
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Jason</p>
+            <p class="member-role">Hardware Integration</p>
+          </div>
+        </div>
+        <div class="member">
+          <span class="avatar" id="avatar1"></span>
+          <div>
+            <p class="member-name">Legacy</p>
+            <p class="member-role">Hardware Integration</p>
+          </div>
+          <div>
+            <p class="member-name">Richie</p>
+            <p class="member-role">UI/UX Designer</p>
+          </div>
+          <div>
+            <p class="member-name">Abdul</p>
+            <p class="member-role">Hardware Integration</p>
+          </div>
+          <div>
+            <p class="member-name">Leo</p>
+            <p class="member-role">Poster Designer</p>
+          </div>
+          <div>
+            <p class="member-name">ssssssscdv1</p>
+            <p class="member-role">Poster Designer</p>
+          </div>
+        </div>
+
+        <div class="member">
+          <span class="avatar" id="avatar2"></span>
+          <div>
+            <p class="member-name">KNUST Embedded Systems Group 2</p>
+            <p class="member-role">Under the guidance of Dr. Osei</p>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="meta-pill">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M8 3v4M16 3v4M3 10h18" />
+            </svg>
+            Released: July 2026
+          </span>
+          <span class="meta-pill">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2" />
+            </svg>
+            Status: Document Finalized
+          </span>
+        </div>
+      </div>
+
+      <!-- Academic Verification -->
+      <div class="verify-card">
+        <span class="chip-icon">
+          <svg viewBox="0 0 100 100">
+            <rect x="30" y="30" width="40" height="40" rx="4" />
+            <rect x="42" y="42" width="16" height="16" rx="2" />
+            <line x1="50" y1="10" x2="50" y2="30" />
+            <line x1="50" y1="70" x2="50" y2="90" />
+            <line x1="10" y1="50" x2="30" y2="50" />
+            <line x1="70" y1="50" x2="90" y2="50" />
+            <line x1="20" y1="20" x2="30" y2="30" />
+            <line x1="70" y1="70" x2="80" y2="80" />
+            <line x1="80" y1="20" x2="70" y2="30" />
+            <line x1="20" y1="80" x2="30" y2="70" />
+          </svg>
+        </span>
+
+        <p class="verify-title">Academic Verification</p>
+        <p class="verify-quote">"The AQ-GLD-G2 system represents a significant advancement in localized environmental
+          safety monitoring. By integrating low-latency sensor arrays with robust backend architecture, the project
+          provides a scalable model for industrial safety protocols in high-risk zones."</p>
+
+        <div class="verify-divider">
+          <span class="line"></span>
+          <span class="label">Institutional Review Board Approved</span>
+        </div>
+
+        <div class="verify-actions">
+          <a href="#" class="btn btn-ghost">Download Full PDF
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+          <a href="#" class="btn btn-solid">Access Source Code
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">
+        <svg viewBox="0 0 24 24">
+          <rect x="4" y="4" width="16" height="16" rx="3" />
+          <path d="M9 9h6v6H9z" />
+          <line x1="9" y1="2" x2="9" y2="4" />
+          <line x1="15" y1="2" x2="15" y2="4" />
+          <line x1="9" y1="20" x2="9" y2="22" />
+          <line x1="15" y1="20" x2="15" y2="22" />
+          <line x1="2" y1="9" x2="4" y2="9" />
+          <line x1="2" y1="15" x2="4" y2="15" />
+          <line x1="20" y1="9" x2="22" y2="9" />
+          <line x1="20" y1="15" x2="22" y2="15" />
+        </svg>
+        AQ-GLD-G2 Engineering Dashboard
+      </span>
+      <nav class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Technical Standards</a>
+        <a href="#">KNUST Lab Site</a>
+      </nav>
+      <span class="footer-copy" id="copyright"></span>
+    </div>
+  </footer>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    // generic illustrated avatars (no real people) built as inline SVG gradients
+    function personAvatar(bg1, bg2) {
+      return `<svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g${bg1}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${bg1}"/>
+          <stop offset="1" stop-color="${bg2}"/>
+        </linearGradient>
+      </defs>
+      <rect width="52" height="52" fill="url(#g${bg1})"/>
+      <circle cx="26" cy="21" r="9" fill="rgba(255,255,255,.85)"/>
+      <path d="M8 50c0-11 8-18 18-18s18 7 18 18" fill="rgba(255,255,255,.85)"/>
+    </svg>`;
+    }
+    document.getElementById('avatar1').innerHTML = personAvatar('#7f6fd6', '#5a4bc4');
+    document.getElementById('avatar2').innerHTML = personAvatar('#3f76c9', '#28507f');
+
+    document.getElementById('copyright').textContent =
+      '© ' + new Date().getFullYear() + ' Embedded Systems Group 2. All rights reserved.';
+  </script>
+  <script src="../theme-toggle.js"></script>
+</body>
+
+</html>

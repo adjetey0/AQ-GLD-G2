@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-GLD-G2 | Create New Password</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../theme-toggle.css">
+</head>
+<body>
+    <!-- Background Technical Grid & Concentric Circles -->
+    <div class="bg-graphics" aria-hidden="true">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <!-- Brand / Logo -->
+                <div class="brand">
+                    <div class="brand-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="15" x2="23" y2="15"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="15" x2="4" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">AQ-GLD-G2</span>
+                        <span class="brand-subtitle">ENGINEERING SYSTEMS</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav-tabs" id="navTabs">
+                    <a href="#" class="tab-item active">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Overview</span>
+                    </a>
+                    <a href="../Architecture-page/system-architecture-workflow.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M21 19c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span>Architecture</span>
+                    </a>
+                    <a href="../Architecture-page/hardware-overview.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>Documentation</span>
+                    </a>
+                    <a href="../Architecture-page/project-team.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Team</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+                    <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+                    <span class="theme-toggle__label">Dark</span>
+                </button>
+                <a href="#" class="sign-in-link">Sign In</a>
+                <button class="support-btn">Support</button>
+                <!-- Mobile Menu Button -->
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-wrapper">
+        <div class="card-container">
+
+            <!-- Card Header Badge & Icon -->
+            <div class="card-header">
+                <div class="badge-icon-wrapper">
+                    <div class="icon-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <polyline points="9 12 11 14 15 10"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="status-badge">
+                    <span class="pulse-dot"></span>
+                    <span class="badge-text">TOKEN VALIDATED</span>
+                </div>
+                <h1 class="card-title">CREATE NEW PASSWORD</h1>
+                <p class="card-subtitle">
+                    Security protocol requires a unique credential set.<br>
+                    Avoid reusing previous system passwords.
+                </p>
+            </div>
+
+            <!-- Password Reset Form -->
+            <form class="password-form" id="passwordForm" onsubmit="return false;">
+                
+                <!-- Field 1: New Security Password -->
+                <div class="form-group">
+                    <label for="newPassword" class="form-label">
+                        <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        NEW SECURITY PASSWORD
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="newPassword" 
+                            class="form-input" 
+                            placeholder="Min. 12 characters recommended" 
+                            autocomplete="new-password"
+                            required
+                        >
+                        <button type="button" class="eye-toggle" id="toggleNewPassword" aria-label="Toggle password visibility">
+                            <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Complexity Meter -->
+                    <div class="complexity-container">
+                        <div class="complexity-meta">
+                            <span class="complexity-label">COMPLEXITY ANALYSIS</span>
+                            <span class="complexity-status" id="complexityStatus">PENDING</span>
+                        </div>
+                        <div class="complexity-bars" id="complexityBars">
+                            <div class="bar-segment"></div>
+                            <div class="bar-segment"></div>
+                            <div class="bar-segment"></div>
+                            <div class="bar-segment"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Field 2: Confirm New Password -->
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">
+                        <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        CONFIRM NEW PASSWORD
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            class="form-input" 
+                            placeholder="Repeat password for verification" 
+                            autocomplete="new-password"
+                            required
+                        >
+                        <span class="validation-match-icon" id="matchIcon"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span>UPDATE PASSWORD</span>
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Security Directive Alert Box -->
+                <div class="directive-box">
+                    <div class="directive-icon-col">
+                        <div class="info-circle">i</div>
+                    </div>
+                    <div class="directive-content">
+                        <h4 class="directive-title">SECURITY DIRECTIVE 14-B</h4>
+                        <p class="directive-text">
+                            Changing your password will terminate all other active sessions across registered hardware devices and engineering documentation portals.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cancel Link -->
+                <div class="back-link-wrapper">
+                    <a href="../index.html" class="back-link">
+                        <span class="back-arrow">&larr;</span> Cancel and Back to Login
+                    </a>
+                </div>
+            </form>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>AQ-GLD-G2 SECURE INFRASTRUCTURE V2.4.0</span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="toastMsg">Password updated successfully!</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="../theme-toggle.js"></script>
+</body>
+</html>

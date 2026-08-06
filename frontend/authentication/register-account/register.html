@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-GLD-G2 | Account Registration</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../theme-toggle.css">
+</head>
+<body>
+    <!-- Background Technical Grid & Circles -->
+    <div class="bg-graphics" aria-hidden="true">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <!-- Brand / Logo -->
+                <div class="brand">
+                    <div class="brand-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="15" x2="23" y2="15"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="15" x2="4" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">AQ-GLD-G2</span>
+                        <span class="brand-subtitle">ENGINEERING SYSTEMS</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav-tabs" id="navTabs">
+                    <a href="index.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Overview</span>
+                    </a>
+                    <a href="../../Architecture-page/system-architecture-workflow.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M21 19c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span>Architecture</span>
+                    </a>
+                    <a href="../../Architecture-page/hardware-overview.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span>Documentation</span>
+                    </a>
+                    <a href="../../Architecture-page/project-team.html" class="tab-item">
+                        <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        </svg>
+                        <span>Team</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+                    <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+                    <span class="theme-toggle__label">Dark</span>
+                </button>
+                <a href="../../index.html" class="sign-in-link">Sign In</a>
+                <button class="support-btn">Support</button>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Registration Section -->
+    <main class="register-wrapper">
+        <div class="register-card">
+            
+            <!-- LEFT COLUMN: DEVICE IDENTIFICATION GUIDE -->
+            <div class="register-col-left">
+                
+                <div class="badge-hardware">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span>SECURE HARDWARE LINK</span>
+                </div>
+
+                <h2 class="guide-title">DEVICE IDENTIFICATION GUIDE</h2>
+                <p class="guide-text">
+                    To link your account with the AQ-GLD-G2 environmental monitor, locate the unique alphanumeric Device ID situated on the primary enclosure label.
+                </p>
+
+                <!-- Hardware Product Photo Frame -->
+                <div class="hardware-photo-box">
+                    <div class="hardware-image-container">
+                        <!-- High-tech device rendering / image -->
+                        <svg class="hardware-illustration" viewBox="0 0 260 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#2a3447" />
+                                    <stop offset="50%" stop-color="#111827" />
+                                    <stop offset="100%" stop-color="#030712" />
+                                </linearGradient>
+                                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#374151" />
+                                    <stop offset="50%" stop-color="#4b5563" />
+                                    <stop offset="100%" stop-color="#1f2937" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Main Cylindrical Body -->
+                            <rect x="50" y="30" width="160" height="70" rx="8" fill="url(#lensGrad)" stroke="#4b5563" stroke-width="1.5" />
+                            <rect x="40" y="100" width="180" height="20" rx="4" fill="url(#ringGrad)" />
+                            <rect x="60" y="120" width="140" height="150" rx="10" fill="url(#lensGrad)" stroke="#374151" stroke-width="1.5" />
+                            <!-- Knurled Grip Bands -->
+                            <line x1="60" y1="140" x2="200" y2="140" stroke="#4b5563" stroke-width="2" stroke-dasharray="4 3" />
+                            <line x1="60" y1="150" x2="200" y2="150" stroke="#4b5563" stroke-width="2" stroke-dasharray="4 3" />
+                            <line x1="60" y1="160" x2="200" y2="160" stroke="#4b5563" stroke-width="2" stroke-dasharray="4 3" />
+                            <!-- Sensor Lens Glass Circle -->
+                            <circle cx="130" cy="210" r="24" fill="#0f172a" stroke="#0284c7" stroke-width="2" />
+                            <circle cx="130" cy="210" r="14" fill="#0284c7" opacity="0.3" />
+                            <circle cx="125" cy="205" r="4" fill="#ffffff" opacity="0.6" />
+                            <!-- Serial Tag Location Arrow -->
+                            <rect x="75" y="245" width="110" height="18" rx="3" fill="#1e293b" stroke="#0284c7" stroke-width="1" />
+                            <text x="130" y="257" font-family="monospace" font-size="8" fill="#38bdf8" text-anchor="middle" font-weight="bold">ID: AQ-GLD-G2-001</text>
+                            <!-- Base Rim -->
+                            <rect x="55" y="270" width="150" height="16" rx="4" fill="url(#ringGrad)" />
+                        </svg>
+                    </div>
+                    
+                    <div class="reference-overlay">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                            <line x1="4" y1="22" x2="4" y2="15"></line>
+                        </svg>
+                        <span>REFERENCE: LABEL LOCATION 'SIDE ENCLOSURE B'</span>
+                    </div>
+                </div>
+
+                <!-- Left Column Footer: Firmware Note -->
+                <div class="firmware-box">
+                    <div class="firmware-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                        </svg>
+                    </div>
+                    <div class="firmware-text">
+                        <span class="firmware-title">FIRMWARE V2.40.1</span>
+                        <span class="firmware-sub">Compatible with all G2-series hardware.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: CREATE YOUR ACCOUNT FORM -->
+            <div class="register-col-right">
+                
+                <h1 class="register-header-title">CREATE YOUR ACCOUNT</h1>
+                <p class="register-header-sub">
+                    Register as a verified stakeholder to access system architecture and real-time telemetry.
+                </p>
+
+                <form class="register-form" id="registerForm" onsubmit="return false;">
+                    
+                    <!-- Row 1: Full Name & Email Address -->
+                    <div class="form-row-2col">
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">
+                                <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                FULL NAME
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                class="form-input" 
+                                placeholder="e.g. Nii Adjetey" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emailAddress" class="form-label">
+                                <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                EMAIL ADDRESS
+                            </label>
+                            <input 
+                                type="email" 
+                                id="emailAddress" 
+                                class="form-input" 
+                                placeholder="name@institution.edu" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Security Password -->
+                    <div class="form-group">
+                        <label for="regPassword" class="form-label">
+                            <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            SECURITY PASSWORD
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="regPassword" 
+                                class="form-input" 
+                                placeholder="Minimum 12 characters" 
+                                required
+                            >
+                            <button type="button" class="eye-toggle" id="toggleRegPassword" aria-label="Toggle password visibility">
+                                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Device ID -->
+                    <div class="form-group">
+                        <label for="deviceId" class="form-label">
+                            <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                <rect x="9" y="9" width="6" height="6"></rect>
+                            </svg>
+                            DEVICE ID (HARDWARE SERIAL)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="deviceId" 
+                            class="form-input" 
+                            placeholder="e.g., AQ-GLD-G2-001" 
+                            required
+                        >
+                        <div class="field-help-text">
+                            <div class="help-info-circle">i</div>
+                            <span>Find this ID printed on your physical detector's enclosure.</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn register-btn" id="registerSubmitBtn">
+                        <span>REGISTER & LINK DEVICE</span>
+                        <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="form-divider"></div>
+
+                    <!-- Footer Link & Badges -->
+                    <div class="register-footer-meta">
+                        <div class="login-prompt">
+                            <span>Already have an account?</span>
+                            <a href="../../index.html" class="login-link">
+                                Login here <span class="arrow-icon">&rarr;</span>
+                            </a>
+                        </div>
+                        <div class="security-badges">
+                            <span class="sec-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                AES-256 ENCRYPTION
+                            </span>
+                            <span class="sec-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                IDENTITY VERIFIED
+                            </span>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Global Registration Footer -->
+   <footer class="footer">
+    <div>AQ-GLD-G2 SECURE INFRASTRUCTURE</div>
+    <div class="footer-links">
+      <a href="#">SYSTEM STATUS</a>
+      <a href="#">ACCESS PROTOCOL</a>
+    </div>
+    <div>© 2026 EMBEDDED SYSTEMS GROUP 2. ACQUIRED RESEARCH PROJECT.</div>
+  </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="toastMsg">Account created & hardware linked successfully!</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="../../theme-toggle.js"></script>
+</body>
+</html>
