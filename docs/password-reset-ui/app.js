@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const toastMsg = document.getElementById('toastMsg');
     const navTabs = document.getElementById('navTabs');
     const mobileToggle = document.getElementById('mobileToggle');
+    const signIn = document.querySelector('.sign-in-link');
+    const supportBtn = document.querySelector('.support-btn');
 
     // Tab Navigation Interaction
     document.querySelectorAll('.tab-item').forEach(tab => {
@@ -25,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
             navTabs.classList.toggle('mobile-open');
+            signIn.classList.toggle('mobile-open');
+            supportBtn.classList.toggle('mobile-open');
         });
     }
 

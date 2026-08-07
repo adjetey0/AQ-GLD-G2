@@ -638,6 +638,25 @@ body {
    ========================================================================== */
 
 @media (max-width: 900px) {
+    .sign-in-link, .support-btn{
+        display: none;
+    }
+
+   .support-btn.mobile-open {
+        display: block;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        z-index: 11;
+    }
+    
+    .sign-in-link.mobile-open{
+        display: block;
+        position: absolute;
+        top: 64px;
+        right:5px;
+        z-index: 11;
+    }
     .nav-tabs {
         display: none;
     }

@@ -1,13 +1,13 @@
-/**
- * AQ-GLD-G2 Firefighting & Telemetry System - Client JavaScript
- * Handles SPA Screen Switching, Live Sliders, Canvas Charting, Table Filtering & Modals
- */
-
 const mobileToggle = document.getElementById('mobileToggle');
 const navTabs = document.getElementById('navTabs');
+const signIn = document.querySelector('.sign-in-link');
+const supportBtn = document.querySelector('.support-btn');
 
 mobileToggle.addEventListener('click', () => {
     navTabs.classList.toggle('mobile-open');
+    signIn.classList.toggle('mobile-open');
+    supportBtn.classList.toggle('mobile-open');
+    
 });
 
 function loginUser() {

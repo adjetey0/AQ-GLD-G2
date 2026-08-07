@@ -5,15 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const navTabs = document.getElementById('navTabs');
     const mobileToggle = document.getElementById('mobileToggle');
     const stateBars = document.querySelector('.state-switcher-bar');
+    const signIn = document.querySelector('.sign-in-link');
+    const supportBtn = document.querySelector('.support-btn');
 
    if (mobileToggle && navTabs && stateBars) {
   mobileToggle.addEventListener('click', () => {
     if (navTabs.classList.contains('mobile-open')) {
       navTabs.classList.remove('mobile-open');
       stateBars.style.display = 'block';
+      signIn.classList.remove('mobile-open');
+      supportBtn.classList.remove('mobile-open');
     } else {
       navTabs.classList.add('mobile-open');
       stateBars.style.display = 'none';
+      signIn.classList.add('mobile-open');
+      supportBtn.classList.add('mobile-open');
     }
   });
 }

@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------------------------------
     const navTabs = document.getElementById('navTabs');
     const mobileToggle = document.getElementById('mobileToggle');
+    const signIn = document.querySelector('.sign-in-link');
+    const supportBtn = document.querySelector('.support-btn');
 
     if (mobileToggle && navTabs) {
         mobileToggle.addEventListener('click', () => {
             navTabs.classList.toggle('mobile-open');
-        });
+            signIn.classList.toggle('mobile-open');
+            supportBtn.classList.toggle('mobile-open');
+         });
     }
 
     // --------------------------------------------------------------------------
