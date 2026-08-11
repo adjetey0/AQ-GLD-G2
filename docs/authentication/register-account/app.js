@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const signIn = document.querySelector('.sign-in-link');
     const supportBtn = document.querySelector('.support-btn');
 
+    const API_BASE = "https://aq-gld-g2-1.onrender.com";
+
     if (mobileToggle && navTabs) {
         mobileToggle.addEventListener('click', () => {
             navTabs.classList.toggle('mobile-open');
@@ -356,7 +358,7 @@ if (registerForm) {
         const deviceId = document.getElementById('deviceId').value;
 
         try {
-            const res = await fetch('http://localhost:3000/auth/register', {
+            const res = await fetch(`${API_BASE}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ fullName, email, password, deviceId })
