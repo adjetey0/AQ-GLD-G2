@@ -424,7 +424,7 @@ footer a {
 }
 
 body[data-theme="dark"] .toast-content{
-    color: #e0f2fe;
+    color: #000000;
 }
 
 @media (max-width: 640px) {
