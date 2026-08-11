@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const signIn = document.querySelector('.sign-in-link');
     const supportBtn = document.querySelector('.support-btn');
 
+    const API_BASE = "https://aq-gld-g2-1.onrender.com";
+
     if (mobileToggle && navTabs) {
         mobileToggle.addEventListener('click', () => {
             navTabs.classList.toggle('mobile-open');
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!token) return;
 
         try {
-            const res = await fetch('http://localhost:3000/auth/me', {
+            const res = await fetch(`${API_BASE}/auth/me`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const user = await res.json();
