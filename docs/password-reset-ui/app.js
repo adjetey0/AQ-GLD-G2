@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const resetToken = urlParams.get('token');
 
+    const API_BASE = "https://aq-gld-g2-1.onrender.com";
+
     // ========================================================
     // Navigation (tabs + mobile menu)
     // ========================================================
@@ -151,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset Password API Call
     // ========================================================
     async function submitPasswordReset(password) {
-        const res = await fetch(`http://localhost:3000/auth/reset-password/${resetToken}`, {
+        const res = await fetch(`${API_BASE}/auth/reset-password/${resetToken}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password })
