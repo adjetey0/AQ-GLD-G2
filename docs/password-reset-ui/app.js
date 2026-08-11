@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elements
+
+    // ========================================================
+    // DOM References
+    // ========================================================
     const newPasswordInput = document.getElementById('newPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
@@ -14,30 +17,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const signIn = document.querySelector('.sign-in-link');
     const supportBtn = document.querySelector('.support-btn');
 
-    // Tab Navigation Interaction
-    document.querySelectorAll('.tab-item').forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
-    });
+    // Reset token comes from the URL query string, e.g. ?token=abc123
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('token');
 
-    // Mobile Navigation Toggle
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-            navTabs.classList.toggle('mobile-open');
-            signIn.classList.toggle('mobile-open');
-            supportBtn.classList.toggle('mobile-open');
+    // ========================================================
+    // Navigation (tabs + mobile menu)
+    // ========================================================
+    function initNavigation() {
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
         });
+
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => {
+                navTabs.classList.toggle('mobile-open');
+                signIn.classList.toggle('mobile-open');
+                supportBtn.classList.toggle('mobile-open');
+            });
+        }
     }
 
-    // Toggle Password Visibility
-    if (toggleNewPasswordBtn && newPasswordInput) {
+    // ========================================================
+    // Password Visibility Toggle
+    // ========================================================
+    function initPasswordVisibilityToggle() {
+        if (!toggleNewPasswordBtn || !newPasswordInput) return;
+
         toggleNewPasswordBtn.addEventListener('click', () => {
             const isPassword = newPasswordInput.type === 'password';
             newPasswordInput.type = isPassword ? 'text' : 'password';
-            
+
             toggleNewPasswordBtn.innerHTML = isPassword ? `
                 <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
@@ -52,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Password Complexity Logic
+    // ========================================================
+    // Password Strength + Match Logic
+    // ========================================================
     function evaluatePasswordStrength(password) {
         let score = 0;
 
@@ -88,17 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
         complexityStatus.style.color = val ? color : '#94a3b8';
 
         complexityBars.forEach((bar, index) => {
-            if (index < score) {
-                bar.style.backgroundColor = color;
-            } else {
-                bar.style.backgroundColor = '#e2e8f0';
-            }
+            bar.style.backgroundColor = index < score ? color : '#e2e8f0';
         });
 
         checkMatch();
     }
 
-    // Check Password Match
     function checkMatch() {
         const pass1 = newPasswordInput.value;
         const pass2 = confirmPasswordInput.value;
@@ -108,26 +119,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (pass1 && pass1 === pass2) {
-            matchIcon.innerHTML = `
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            `;
-        } else {
-            matchIcon.innerHTML = `
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            `;
-        }
+        matchIcon.innerHTML = (pass1 && pass1 === pass2) ? `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        ` : `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        `;
     }
 
-    newPasswordInput.addEventListener('input', updateComplexityMeter);
-    confirmPasswordInput.addEventListener('input', checkMatch);
+    function initPasswordInputs() {
+        newPasswordInput.addEventListener('input', updateComplexityMeter);
+        confirmPasswordInput.addEventListener('input', checkMatch);
+    }
 
-    // Toast Notification helper
+    // ========================================================
+    // Toast Notification
+    // ========================================================
     function showToast(message) {
         toastMsg.textContent = message;
         toast.classList.add('show');
@@ -136,10 +147,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+    // ========================================================
+    // Reset Password API Call
+    // ========================================================
+    async function submitPasswordReset(password) {
+        const res = await fetch(`http://localhost:3000/auth/reset-password/${resetToken}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || 'Reset failed');
+        }
+    }
+
+    // ========================================================
     // Form Submission
-    if (passwordForm) {
-        passwordForm.addEventListener('submit', (e) => {
+    // ========================================================
+    function initPasswordForm() {
+        if (!passwordForm) return;
+
+        passwordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+
             const pass1 = newPasswordInput.value;
             const pass2 = confirmPasswordInput.value;
 
@@ -153,13 +186,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            showToast('Password updated successfully! Redirecting...');
+            if (!resetToken) {
+                showToast('Reset link is invalid or missing a token.');
+                return;
+            }
 
-            setTimeout(() => {
-                newPasswordInput.value = '';
-                confirmPasswordInput.value = '';
-                updateComplexityMeter();
-            }, 2500);
+            try {
+                await submitPasswordReset(pass1);
+
+                showToast('Password updated successfully! Redirecting...');
+
+                setTimeout(() => {
+                    newPasswordInput.value = '';
+                    confirmPasswordInput.value = '';
+                    updateComplexityMeter();
+                    window.location.href = '../index.html'; // redirect to login
+                }, 2500);
+            } catch (err) {
+                showToast(err.message || 'Error connecting to server');
+            }
         });
     }
+
+    // ========================================================
+    // Init
+    // ========================================================
+    initNavigation();
+    initPasswordVisibilityToggle();
+    initPasswordInputs();
+    initPasswordForm();
 });

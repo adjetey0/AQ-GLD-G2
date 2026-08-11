@@ -8,29 +8,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const signIn = document.querySelector('.sign-in-link');
     const supportBtn = document.querySelector('.support-btn');
 
-   if (mobileToggle && navTabs && stateBars) {
-  mobileToggle.addEventListener('click', () => {
-    if (navTabs.classList.contains('mobile-open')) {
-      navTabs.classList.remove('mobile-open');
-      stateBars.style.display = 'block';
-      signIn.classList.remove('mobile-open');
-      supportBtn.classList.remove('mobile-open');
-    } else {
-      navTabs.classList.add('mobile-open');
-      stateBars.style.display = 'none';
-      signIn.classList.add('mobile-open');
-      supportBtn.classList.add('mobile-open');
+    if (mobileToggle && navTabs) {
+        mobileToggle.addEventListener('click', () => {
+            navTabs.classList.toggle('mobile-open');
+            if (stateBars) stateBars.style.display = navTabs.classList.contains('mobile-open') ? 'none' : 'block';
+            if (signIn) signIn.classList.toggle('mobile-open');
+            if (supportBtn) supportBtn.classList.toggle('mobile-open');
+        });
     }
-  });
-}
+
+    // Fetch user profile info on load
+    async function fetchUserInfo() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const res = await fetch('http://localhost:3000/auth/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const user = await res.json();
+
+            if (res.ok && user.fullName) {
+                const usernameDisplay = document.getElementById('usernameDisplay');
+                if (usernameDisplay) usernameDisplay.textContent = user.fullName;
+            }
+        } catch (err) {
+            console.error('Error connecting to authentication server:', err);
+        }
+    }
+    fetchUserInfo();
 
     // --------------------------------------------------------------------------
-    // Telemetry Dashboard Chart & State Management
+    // Threshold Configurations (PPM)
+    // --------------------------------------------------------------------------
+    const THRESHOLDS = {
+        mq2: 200, // Combustible Gas / Smoke threshold
+        mq5: 150, // Natural Gas / LPG threshold
+        mq7: 50   // Carbon Monoxide threshold
+    };
+
+    const OFFLINE_TIMEOUT_SECONDS = 30; // Mark device offline if no data for > 30s
+
+    // --------------------------------------------------------------------------
+    // Telemetry Dashboard Elements & Chart Init
     // --------------------------------------------------------------------------
     const ctx = document.getElementById('telemetryChart');
     let telemetryChart = null;
 
-    // Elements for Dynamic State Toggle
     const bannerNormal = document.getElementById('bannerNormal');
     const bannerDanger = document.getElementById('bannerDanger');
     const bannerOffline = document.getElementById('bannerOffline');
@@ -65,40 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pairDeviceBtn = document.getElementById('pairDeviceBtn');
     const scanningStatus = document.getElementById('scanningStatus');
+    const lastUpdatedEl = document.getElementById('lastUpdatedSec');
 
-    // Chart Datasets per State
-    const chartDataPresets = {
-        normal: {
-            mq2: [120, 125, 114, 140, 130, 122, 128],
-            mq5: [85, 88, 83, 95, 90, 87, 89],
-            mq7: [15, 19, 14, 22, 19, 16, 17],
-            maxScale: 140
-        },
-        danger: {
-            mq2: [120, 122, 125, 140, 185, 260, 350],
-            mq5: [85, 88, 83, 92, 90, 88, 89],
-            mq7: [15, 19, 14, 20, 19, 18, 17],
-            maxScale: 400
-        },
-        offline: {
-            mq2: [120, 125, 114, 128, 128, 128, 128],
-            mq5: [85, 88, 83, 89, 89, 89, 89],
-            mq7: [15, 19, 14, 17, 17, 17, 17],
-            maxScale: 140
-        }
-    };
-
+    // Chart Datasets Initialization
     if (ctx && typeof Chart !== 'undefined') {
-        const labels = ['10:00', '10:05', '10:10', '10:15', '10:20', '10:25', '10:30'];
-
         telemetryChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: labels,
+                labels: ['--', '--', '--', '--', '--', '--', '--'],
                 datasets: [
                     {
                         label: 'MQ-2 (Combustible Gas)',
-                        data: [...chartDataPresets.normal.mq2],
+                        data: [0, 0, 0, 0, 0, 0, 0],
                         borderColor: '#2563eb',
                         backgroundColor: 'rgba(37, 99, 235, 0.05)',
                         borderWidth: 2.5,
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     {
                         label: 'MQ-5 (Natural Gas)',
-                        data: [...chartDataPresets.normal.mq5],
+                        data: [0, 0, 0, 0, 0, 0, 0],
                         borderColor: '#16a34a',
                         backgroundColor: 'rgba(22, 163, 74, 0.05)',
                         borderWidth: 2.5,
@@ -124,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     {
                         label: 'MQ-7 (Carbon Monoxide)',
-                        data: [...chartDataPresets.normal.mq7],
+                        data: [0, 0, 0, 0, 0, 0, 0],
                         borderColor: '#dc2626',
                         backgroundColor: 'rgba(220, 38, 38, 0.05)',
                         borderWidth: 2.5,
@@ -169,20 +171,121 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Master Dashboard State Switcher Function
-    function setDashboardState(state) {
+    // --------------------------------------------------------------------------
+    // Real-Time Backend Polling & Automatic State Engine
+    // --------------------------------------------------------------------------
+    let manualOverrideState = null; // Allows testing with buttons if desired
+    let lastReceivedLogTimestamp = null;
+
+    async function pollSensorData() {
+        if (manualOverrideState) return; // Skip if user explicitly clicked demo state button
+
+        const token = localStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+        try {
+            // Fetch Latest Reading & History concurrently
+            const [latestRes, historyRes] = await Promise.all([
+                fetch('http://localhost:3000/sensor/latest', { headers }),
+                fetch('http://localhost:3000/sensor/history?limit=7', { headers })
+            ]);
+
+            if (latestRes.status === 404) {
+                // No sensor data logged yet
+                applyDashboardState('unpaired');
+                return;
+            }
+
+            if (!latestRes.ok) {
+                throw new Error(`Server returned HTTP ${latestRes.status}`);
+            }
+
+            const latestLog = await latestRes.json();
+            const historyLogs = historyRes.ok ? await historyRes.json() : [];
+
+            // Process sensor readings
+            processRealtimeTelemetry(latestLog, historyLogs);
+        } catch (err) {
+            console.warn('Unable to poll live sensor data (Server or Network issue):', err.message);
+            applyDashboardState('offline');
+        }
+    }
+
+    /**
+     * Evaluates real sensor numbers and updates UI to Normal, Danger, or Offline state
+     */
+    function processRealtimeTelemetry(latestLog, historyLogs) {
+        if (!latestLog || latestLog.mq2 === undefined) {
+            applyDashboardState('offline');
+            return;
+        }
+
+        const mq2 = Number(latestLog.mq2);
+        const mq5 = Number(latestLog.mq5);
+        const mq7 = Number(latestLog.mq7);
+        const timestamp = new Date(latestLog.timestamp);
+        lastReceivedLogTimestamp = timestamp;
+
+        // Check if device is offline (stale data > 30 seconds)
+        const secondsElapsed = Math.floor((Date.now() - timestamp.getTime()) / 1000);
+        if (lastUpdatedEl) {
+            lastUpdatedEl.textContent = `${secondsElapsed}S AGO`;
+        }
+
+        if (secondsElapsed > OFFLINE_TIMEOUT_SECONDS) {
+            applyDashboardState('offline', latestLog);
+            return;
+        }
+
+        // Check hazard condition
+        const isMq2Danger = mq2 >= THRESHOLDS.mq2;
+        const isMq5Danger = mq5 >= THRESHOLDS.mq5;
+        const isMq7Danger = mq7 >= THRESHOLDS.mq7;
+        const isDanger = isMq2Danger || isMq5Danger || isMq7Danger;
+
+        if (isDanger) {
+            applyDashboardState('danger', latestLog, { isMq2Danger, isMq5Danger, isMq7Danger });
+        } else {
+            applyDashboardState('normal', latestLog);
+        }
+
+        // Update Live Chart with real historical readings from database
+        if (telemetryChart && Array.isArray(historyLogs) && historyLogs.length > 0) {
+            const sortedHistory = [...historyLogs].reverse(); // Oldest to newest
+            
+            const labels = sortedHistory.map(item => {
+                const d = new Date(item.timestamp);
+                return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            });
+
+            const mq2Series = sortedHistory.map(item => Number(item.mq2));
+            const mq5Series = sortedHistory.map(item => Number(item.mq5));
+            const mq7Series = sortedHistory.map(item => Number(item.mq7));
+
+            // Dynamic Y-axis scale calculation
+            const maxVal = Math.max(...mq2Series, ...mq5Series, ...mq7Series, 140);
+
+            telemetryChart.data.labels = labels;
+            telemetryChart.data.datasets[0].data = mq2Series;
+            telemetryChart.data.datasets[1].data = mq5Series;
+            telemetryChart.data.datasets[2].data = mq7Series;
+            telemetryChart.options.scales.y.max = Math.ceil((maxVal + 20) / 50) * 50;
+            telemetryChart.update();
+        }
+    }
+
+    /**
+     * Master State Renderer Function
+     */
+    function applyDashboardState(state, data = null, dangerFlags = {}) {
         document.body.setAttribute('data-state', state);
 
-        // Update Demo State Switcher Buttons
+        // Synchronize switcher buttons active state
         document.querySelectorAll('.state-btn').forEach(btn => {
-            if (btn.getAttribute('data-set-state') === state) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            btn.classList.toggle('active', btn.getAttribute('data-set-state') === state);
         });
 
-        // 1. UNPAIRED STATE (No Device Paired)
+        // 1. UNPAIRED STATE
         if (state === 'unpaired') {
             if (activeHardwareView) activeHardwareView.style.display = 'none';
             if (unpairedView) unpairedView.style.display = 'flex';
@@ -197,9 +300,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show active hardware view for all paired states
         if (activeHardwareView) activeHardwareView.style.display = 'block';
         if (unpairedView) unpairedView.style.display = 'none';
+
+        const valMq2 = data ? data.mq2 : '--';
+        const valMq5 = data ? data.mq5 : '--';
+        const valMq7 = data ? data.mq7 : '--';
 
         // 2. NORMAL / SAFE STATE
         if (state === 'normal') {
@@ -212,22 +318,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statusText) statusText.textContent = 'ONLINE';
             }
 
-            // Cards Reset
+            // Cards Normal Reset
             if (cardMq2) cardMq2.className = 'sensor-card';
             if (badgeMq2) { badgeMq2.className = 'status-badge-card'; badgeMq2.textContent = 'SAFE'; }
-            if (mq2Val) mq2Val.textContent = '128';
+            if (mq2Val) mq2Val.textContent = valMq2;
 
             if (cardMq5) cardMq5.className = 'sensor-card';
             if (badgeMq5) { badgeMq5.className = 'status-badge-card'; badgeMq5.textContent = 'SAFE'; }
-            if (mq5Val) mq5Val.textContent = '89';
+            if (mq5Val) mq5Val.textContent = valMq5;
 
             if (cardMq7) cardMq7.className = 'sensor-card';
             if (badgeMq7) { badgeMq7.className = 'status-badge-card'; badgeMq7.textContent = 'SAFE'; }
-            if (mq7Val) mq7Val.textContent = '17';
+            if (mq7Val) mq7Val.textContent = valMq7;
 
-            if (oledMq2) oledMq2.textContent = '128';
-            if (oledMq5) oledMq5.textContent = '89';
-            if (oledMq7) oledMq7.textContent = '17';
+            if (oledMq2) oledMq2.textContent = valMq2;
+            if (oledMq5) oledMq5.textContent = valMq5;
+            if (oledMq7) oledMq7.textContent = valMq7;
             if (oledStatus) { oledStatus.className = 'oled-line safe-text'; oledStatus.textContent = 'AIR QUALITY: SAFE'; }
 
             if (relayBadge) { relayBadge.className = 'open-badge'; relayBadge.textContent = 'OPEN'; }
@@ -244,15 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 `;
             }
-
-            // Update Chart
-            if (telemetryChart) {
-                telemetryChart.options.scales.y.max = chartDataPresets.normal.maxScale;
-                telemetryChart.data.datasets[0].data = [...chartDataPresets.normal.mq2];
-                telemetryChart.data.datasets[1].data = [...chartDataPresets.normal.mq5];
-                telemetryChart.data.datasets[2].data = [...chartDataPresets.normal.mq7];
-                telemetryChart.update();
-            }
         }
 
         // 3. DANGER (GAS LEAK DETECTED) STATE
@@ -266,23 +363,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statusText) statusText.textContent = 'HAZARD DETECTED';
             }
 
-            // MQ-2 Danger Highlight
-            if (cardMq2) cardMq2.className = 'sensor-card card-danger';
-            if (badgeMq2) { badgeMq2.className = 'status-badge-card badge-danger'; badgeMq2.textContent = 'DANGER'; }
-            if (mq2Val) mq2Val.textContent = '350';
+            // Highlight MQ-2 Card if in danger
+            if (cardMq2) cardMq2.className = dangerFlags.isMq2Danger ? 'sensor-card card-danger' : 'sensor-card';
+            if (badgeMq2) {
+                badgeMq2.className = dangerFlags.isMq2Danger ? 'status-badge-card badge-danger' : 'status-badge-card';
+                badgeMq2.textContent = dangerFlags.isMq2Danger ? 'DANGER' : 'SAFE';
+            }
+            if (mq2Val) mq2Val.textContent = valMq2;
 
-            if (cardMq5) cardMq5.className = 'sensor-card';
-            if (badgeMq5) { badgeMq5.className = 'status-badge-card'; badgeMq5.textContent = 'SAFE'; }
-            if (mq5Val) mq5Val.textContent = '89';
+            // Highlight MQ-5 Card if in danger
+            if (cardMq5) cardMq5.className = dangerFlags.isMq5Danger ? 'sensor-card card-danger' : 'sensor-card';
+            if (badgeMq5) {
+                badgeMq5.className = dangerFlags.isMq5Danger ? 'status-badge-card badge-danger' : 'status-badge-card';
+                badgeMq5.textContent = dangerFlags.isMq5Danger ? 'DANGER' : 'SAFE';
+            }
+            if (mq5Val) mq5Val.textContent = valMq5;
 
-            if (cardMq7) cardMq7.className = 'sensor-card';
-            if (badgeMq7) { badgeMq7.className = 'status-badge-card'; badgeMq7.textContent = 'SAFE'; }
-            if (mq7Val) mq7Val.textContent = '17';
+            // Highlight MQ-7 Card if in danger
+            if (cardMq7) cardMq7.className = dangerFlags.isMq7Danger ? 'sensor-card card-danger' : 'sensor-card';
+            if (badgeMq7) {
+                badgeMq7.className = dangerFlags.isMq7Danger ? 'status-badge-card badge-danger' : 'status-badge-card';
+                badgeMq7.textContent = dangerFlags.isMq7Danger ? 'DANGER' : 'SAFE';
+            }
+            if (mq7Val) mq7Val.textContent = valMq7;
 
-            if (oledMq2) oledMq2.textContent = '350';
-            if (oledMq5) oledMq5.textContent = '89';
-            if (oledMq7) oledMq7.textContent = '17';
-            if (oledStatus) { oledStatus.className = 'oled-line danger-text'; oledStatus.textContent = 'WARNING: GAS LEAK'; }
+            if (oledMq2) oledMq2.textContent = valMq2;
+            if (oledMq5) oledMq5.textContent = valMq5;
+            if (oledMq7) oledMq7.textContent = valMq7;
+
+            // Formulate specific hazard message
+            let hazardMsg = 'WARNING: GAS LEAK';
+            if (dangerFlags.isMq2Danger) hazardMsg = 'WARNING: SMOKE/GAS LEAK';
+            else if (dangerFlags.isMq5Danger) hazardMsg = 'WARNING: NATURAL GAS LEAK';
+            else if (dangerFlags.isMq7Danger) hazardMsg = 'WARNING: CARBON MONOXIDE';
+
+            if (oledStatus) { oledStatus.className = 'oled-line danger-text'; oledStatus.textContent = hazardMsg; }
 
             if (relayBadge) { relayBadge.className = 'open-badge badge-danger'; relayBadge.textContent = 'CLOSED'; }
 
@@ -298,15 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 `;
             }
-
-            // Update Chart with spike
-            if (telemetryChart) {
-                telemetryChart.options.scales.y.max = chartDataPresets.danger.maxScale;
-                telemetryChart.data.datasets[0].data = [...chartDataPresets.danger.mq2];
-                telemetryChart.data.datasets[1].data = [...chartDataPresets.danger.mq5];
-                telemetryChart.data.datasets[2].data = [...chartDataPresets.danger.mq7];
-                telemetryChart.update();
-            }
         }
 
         // 4. DEVICE OFFLINE STATE
@@ -320,7 +426,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statusText) statusText.textContent = 'OFFLINE';
             }
 
-            // Stale Data Badges
             if (cardMq2) cardMq2.className = 'sensor-card card-offline';
             if (badgeMq2) { badgeMq2.className = 'status-badge-card badge-stale'; badgeMq2.textContent = 'STALE DATA'; }
 
@@ -331,23 +436,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (badgeMq7) { badgeMq7.className = 'status-badge-card badge-stale'; badgeMq7.textContent = 'STALE DATA'; }
 
             if (oledStatus) { oledStatus.className = 'oled-line muted-text'; oledStatus.textContent = 'DISCONNECTED'; }
-
-            // Flatline Chart
-            if (telemetryChart) {
-                telemetryChart.options.scales.y.max = chartDataPresets.offline.maxScale;
-                telemetryChart.data.datasets[0].data = [...chartDataPresets.offline.mq2];
-                telemetryChart.data.datasets[1].data = [...chartDataPresets.offline.mq5];
-                telemetryChart.data.datasets[2].data = [...chartDataPresets.offline.mq7];
-                telemetryChart.update();
-            }
         }
     }
 
-    // Attach Event Listeners to Demo Switcher Buttons
+    // Attach Event Listeners to Demo Controller Buttons (Manual Override feature)
     document.querySelectorAll('.state-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const targetState = btn.getAttribute('data-set-state');
-            setDashboardState(targetState);
+            manualOverrideState = targetState;
+            applyDashboardState(targetState);
         });
     });
 
@@ -362,52 +459,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 pairDeviceBtn.disabled = false;
                 pairDeviceBtn.innerHTML = `<span class="plus-icon">+</span> PAIR NEW DEVICE`;
                 if (scanningStatus) scanningStatus.innerHTML = `<span class="radar-spinner"></span><span>SCANNING FOR HARDWARE VIA BLUETOOTH...</span>`;
-                setDashboardState('normal');
+                manualOverrideState = null;
+                pollSensorData();
             }, 2000);
         });
     }
 
-    // Fluctuation Interval for Normal State
-    setInterval(() => {
-        const currentState = document.body.getAttribute('data-state') || 'normal';
-        if (currentState !== 'normal') return;
-
-        const deltaMq2 = Math.floor(Math.random() * 3) - 1;
-        const deltaMq5 = Math.floor(Math.random() * 3) - 1;
-        const deltaMq7 = Math.floor(Math.random() * 3) - 1;
-
-        if (mq2Val) {
-            let cur = Math.max(115, Math.min(140, parseInt(mq2Val.textContent) + deltaMq2));
-            mq2Val.textContent = cur;
-            if (oledMq2) oledMq2.textContent = cur;
-        }
-
-        if (mq5Val) {
-            let cur = Math.max(80, Math.min(100, parseInt(mq5Val.textContent) + deltaMq5));
-            mq5Val.textContent = cur;
-            if (oledMq5) oledMq5.textContent = cur;
-        }
-
-        if (mq7Val) {
-            let cur = Math.max(12, Math.min(25, parseInt(mq7Val.textContent) + deltaMq7));
-            mq7Val.textContent = cur;
-            if (oledMq7) oledMq7.textContent = cur;
-        }
-    }, 3000);
-
-    // Timers
-    let secCounter = 2;
-    const lastUpdatedEl = document.getElementById('lastUpdatedSec');
-    if (lastUpdatedEl) {
-        setInterval(() => {
-            secCounter = (secCounter % 5) + 1;
-            lastUpdatedEl.textContent = secCounter + 'S';
-        }, 1000);
-    }
-
-    let seconds = 8;
-    let minutes = 12;
-    let hours = 4;
+    // Operating Uptime Timer
+    let seconds = 8, minutes = 12, hours = 4;
     const opTimerEl = document.getElementById('opTimer');
     if (opTimerEl) {
         setInterval(() => {
@@ -421,44 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // --------------------------------------------------------------------------
-    // Password Reset Form Logic (If on Password Reset Page)
-    // --------------------------------------------------------------------------
-    const newPasswordInput = document.getElementById('newPassword');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
-    const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
-    const complexityBars = document.querySelectorAll('.bar-segment');
-    const complexityStatus = document.getElementById('complexityStatus');
-    const matchIcon = document.getElementById('matchIcon');
-    const passwordForm = document.getElementById('passwordForm');
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toastMsg');
-
-    if (toggleNewPasswordBtn && newPasswordInput) {
-        toggleNewPasswordBtn.addEventListener('click', () => {
-            const isPassword = newPasswordInput.type === 'password';
-            newPasswordInput.type = isPassword ? 'text' : 'password';
-            toggleNewPasswordBtn.innerHTML = isPassword ? `
-                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                </svg>
-            ` : `
-                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-            `;
-        });
-    }
-
-    if (passwordForm) {
-        passwordForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!toast || !toastMsg) return;
-            toastMsg.textContent = 'Password updated successfully!';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        });
-    }
+    // Start automatic polling loop every 3 seconds
+    pollSensorData();
+    setInterval(pollSensorData, 3000);
 });

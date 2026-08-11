@@ -10,12 +10,35 @@ mobileToggle.addEventListener('click', () => {
 });
 
 function loginUser() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-    if (email && password) {
-        window.location.href = "dashboard/index.html";
+  fetch('http://localhost:3000/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }) // matches backend now
+  })
+  .then(async res => {
+    const data = await res.json();
+
+    if (!res.ok) {
+      toastMsg.textContent = data.error || 'Login failed';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
     } else {
-        alert("Please enter email and password");
+      localStorage.setItem('token', data.token);
+      toastMsg.textContent = 'Login successful! Redirecting...';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+        window.location.href = 'dashboard/index.html';
+      }, 2000);
     }
+  })
+  .catch(err => {
+    toastMsg.textContent = 'Error connecting to server';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
 }
+localStorage.setItem('token', data.token);

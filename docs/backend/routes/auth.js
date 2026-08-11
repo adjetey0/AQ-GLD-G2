@@ -1,0 +1,188 @@
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const authMiddleware = require('../middleware/auth');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+
+const router = express.Router();
+
+// Register user or ESP device account
+router.post('/register', async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists. Please log in.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    const user = new User({
+      fullName: req.body.fullName || 'User',
+      email: req.body.email,
+      password: hashedPassword,
+      deviceId: req.body.deviceId
+    });
+
+    await user.save();
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Login user or ESP32 device
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return res.status(401).json({ error: 'Invalid credentials' });
+
+    // Generate JWT (e.g. 24h expiration so ESP32 doesn't have to log in constantly)
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET || 'SECRET_KEY',
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        deviceId: user.deviceId
+      }
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Request Password Reset
+router.post('/reset-password-request', async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(404).json({ error: 'No account with that email.' });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 mins
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    const resetLink = `http://localhost:3000/docs/password-reset-ui/index.html?token=${token}`;
+
+    await transporter.sendMail({
+      to: user.email,
+      from: process.env.EMAIL_USER,
+      subject: 'Password Reset - AQ-GLD-G2',
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2 style="color: #2c3e50;">Reset Your Password</h2>
+          <p>Hello ${user.fullName || ''},</p>
+          <p>We received a request to reset your password. Click the button below to set a new one:</p>
+          <p style="text-align: center;">
+            <a href="${resetLink}" 
+               style="background-color: #3498db; color: #fff; padding: 10px 20px; 
+                      text-decoration: none; border-radius: 5px; display: inline-block;">
+              Reset Password
+            </a>
+          </p>
+          <p>This link will expire in <strong>15 minutes</strong>.</p>
+          <p>If you didn’t request this, you can safely ignore this email.</p>
+          <hr style="margin-top:20px; border:none; border-top:1px solid #eee;">
+          <p style="font-size: 12px; color: #888;">© ${new Date().getFullYear()} AQ-GLD-G2 </p>
+        </div>
+      `
+    });
+
+    res.json({ message: 'Password reset link sent to email.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Reset Password confirmation
+router.post('/reset-password/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) return res.status(400).json({ error: 'Invalid or expired token.' });
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Password reset successful.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get current user profile (/me)
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('fullName email deviceId');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get detailed profile
+router.get('/profile', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('fullName email phoneNumber whatsappNumber deviceId');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update profile
+router.put('/profile', authMiddleware, async (req, res) => {
+  try {
+    const updates = {
+      fullName: req.body.fullName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      whatsappNumber: req.body.whatsappNumber
+    };
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      updates,
+      { returnDocument: 'after' }
+    ).select('fullName email phoneNumber whatsappNumber');
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+module.exports = router;

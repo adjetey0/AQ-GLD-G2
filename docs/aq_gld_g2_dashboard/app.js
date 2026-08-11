@@ -9,18 +9,62 @@ mobileToggle.addEventListener('click', () => {
     supportBtn.classList.toggle('mobile-open');
     
 });
+document.addEventListener('DOMContentLoaded', fetchProfile);
 
-function loginUser() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+async function fetchProfile() {
+  const token = localStorage.getItem('token');
+  if (!token) return;
 
-    // Example check (replace with real logic later)
-    if (email && password) {
-        window.location.href = "dashboard/index.html";
+  try {
+    const res = await fetch('http://localhost:3000/auth/profile', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const user = await res.json();
+
+    if (res.ok) {
+      document.getElementById('displayName').value = user.fullName || '';
+      document.getElementById('emailAddress').value = user.email || '';
+      document.getElementById('phoneNumber').value = user.phoneNumber || '';
+      document.getElementById('whatsappNumber').value = user.whatsappNumber || '';
     } else {
-        alert("Please enter email and password");
+      console.error(user.error || 'Failed to fetch profile');
     }
+  } catch (err) {
+    console.error('Error connecting to server', err);
+  }
 }
+
+document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  const profileData = {
+    fullName: document.getElementById('displayName').value,
+    email: document.getElementById('emailAddress').value,
+    phoneNumber: document.getElementById('phoneNumber').value,
+    whatsappNumber: document.getElementById('whatsappNumber').value
+  };
+
+  try {
+    const res = await fetch('http://localhost:3000/auth/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(profileData)
+    });
+
+    const updatedUser = await res.json();
+    if (res.ok) {
+      alert('Profile updated successfully!');
+    } else {
+      console.error(updatedUser.error || 'Failed to update profile');
+    }
+  } catch (err) {
+    console.error('Error updating profile', err);
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     

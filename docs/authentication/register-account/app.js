@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navTabs.classList.toggle('mobile-open');
             signIn.classList.toggle('mobile-open');
             supportBtn.classList.toggle('mobile-open');
-         });
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -341,72 +341,49 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2000);
         });
     }
-
-    // --------------------------------------------------------------------------
-    // Account Registration Form Logic (register.html)
-    // --------------------------------------------------------------------------
-    const registerForm = document.getElementById('registerForm');
-    const regPassword = document.getElementById('regPassword');
-    const toggleRegPassword = document.getElementById('toggleRegPassword');
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toastMsg');
-
-    if (toggleRegPassword && regPassword) {
-        toggleRegPassword.addEventListener('click', () => {
-            const isPassword = regPassword.type === 'password';
-            regPassword.type = isPassword ? 'text' : 'password';
-            toggleRegPassword.innerHTML = isPassword ? `
-                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                </svg>
-            ` : `
-                <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-            `;
-        });
-    }
-
-    if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('fullName').value;
-            const deviceId = document.getElementById('deviceId').value;
-
-            if (toast && toastMsg) {
-                toastMsg.textContent = `Account created for ${name}! Device ${deviceId} linked. Redirecting...`;
-                toast.classList.add('show');
-            }
-
-            setTimeout(() => {
-                window.location.href = '../../dashboard/index.html';
-            }, 2000);
-        });
-    }
-
-    // Password Reset Page Logic
-    const passwordForm = document.getElementById('passwordForm');
-    const newPasswordInput = document.getElementById('newPassword');
-    const toggleNewPasswordBtn = document.getElementById('toggleNewPassword');
-
-    if (toggleNewPasswordBtn && newPasswordInput) {
-        toggleNewPasswordBtn.addEventListener('click', () => {
-            const isPassword = newPasswordInput.type === 'password';
-            newPasswordInput.type = isPassword ? 'text' : 'password';
-        });
-    }
-
-    if (passwordForm) {
-        passwordForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!toast || !toastMsg) return;
-            toastMsg.textContent = 'Password updated successfully! Redirecting...';
-            toast.classList.add('show');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-        });
-    }
 });
+
+// --------------------------------------------------------------------------
+// Account Registration Form Logic (register.html)
+// --------------------------------------------------------------------------
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('regPassword').value;
+        const deviceId = document.getElementById('deviceId').value;
+
+        try {
+            const res = await fetch('http://localhost:3000/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName, email, password, deviceId })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                // ❌ Backend returned an error (e.g. user already exists)
+                toastMsg.textContent = data.error || 'Registration failed';
+                toast.classList.add('show');
+            } else {
+                // ✅ Registration successful
+                toastMsg.textContent = `Account created for ${fullName}! Device ${deviceId} linked. Redirecting...`;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    window.location.href = '../../dashboard/index.html';
+                }, 2000);
+            }
+        } catch (err) {
+            toastMsg.textContent = 'Error connecting to server';
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    });
+}
