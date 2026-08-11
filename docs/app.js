@@ -8,12 +8,13 @@ mobileToggle.addEventListener('click', () => {
     signIn.classList.toggle('mobile-open');
     supportBtn.classList.toggle('mobile-open');
 });
+const API_BASE = "https://aq-gld-g2-1.onrender.com";
 
 function loginUser() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  fetch('http://localhost:3000/auth/login', {
+  fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }) // matches backend now
