@@ -3,6 +3,8 @@ const navTabs = document.getElementById('navTabs');
 const signIn = document.querySelector('.sign-in-link');
 const supportBtn = document.querySelector('.support-btn');
 
+const API_BASE = "https://aq-gld-g2-1.onrender.com";
+
 mobileToggle.addEventListener('click', () => {
     navTabs.classList.toggle('mobile-open');
     signIn.classList.toggle('mobile-open');
@@ -16,7 +18,7 @@ async function fetchProfile() {
   if (!token) return;
 
   try {
-    const res = await fetch('http://localhost:3000/auth/profile', {
+    const res = await fetch(`${API_BASE}/auth/profile`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const user = await res.json();
